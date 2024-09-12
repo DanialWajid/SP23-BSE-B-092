@@ -1,0 +1,48 @@
+*{ 
+    padding: 0;
+    margin: 0;
+}
+.shop-click p{
+   display: flex;
+   justify-content: space-between;
+   font-size: large;
+   font-weight: 900;
+}
+.shop-click{
+    background-color: rgba(201, 255, 3);
+    align-items: center;
+    padding: 0.76% 4%;
+}
+.shop-click a{
+    color: black;
+}
+.shop-click i{
+font-size: 130%;
+cursor: pointer;
+}
+.link{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75% 4%;
+}
+.link-list ul li {
+    display: flex;
+}
+.store-locator{
+    display: flex;
+    align-items: center;
+}
+
+.store-locator i{
+    margin-right: 10px;
+    font-size: 80%;
+}
+.link-list ul{
+    display: flex;
+    gap: 30px;
+}
+
+.link a{
+    text-decoration: none;
+    color: black;
+}
