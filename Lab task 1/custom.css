@@ -94,6 +94,10 @@ height: 60vw;
 .d-small-none{
     display: none;
 }
+.sticky-top{
+    position: static;
+    top: 0;
+}
 @media (max-width: 1000px) {
     .position-bm {
         bottom: 0 !important; 
@@ -133,6 +137,9 @@ height: 60vw;
        .h-105{
         height: 90vw;
         }
+        .d-small-none{
+            display: inline-block;
+        }
 }
 
 
@@ -164,9 +171,7 @@ height: 60vw;
     .mb-6{
         margin-bottom: 0;
     }
-    .d-small-none{
-        display: inline-block;
-    }
+   
     .b-top{
         border-top: 0.1px solid rgb(216, 207, 207);
     }
@@ -175,6 +180,16 @@ height: 60vw;
         padding-left: 0 !important;
     }
     .h-105{
-        height: 90vw;
-        }
+        height:164vw;
+    }
+    .sticky-top{
+        position: sticky;
+        top: 0;
+    }
+    .sticky-top-10{
+        position: sticky;
+        top: 3.75%;
+        z-index: 1020;
+    }
+
 }
