@@ -35,6 +35,9 @@
     width: 100%;
     top: 40vw;
 }
+.gap-15{
+ gap: 15vw;
+}
 @media (min-width:1397px) {
     .img-cards{
         top: 25vw;
@@ -143,6 +146,9 @@ height: 60vw;
         .d-large-none{
             display: inline-block;
         }
+        .gap-15{
+            gap: 45vw;
+           }
        
 }
 
@@ -206,5 +212,14 @@ height: 60vw;
         left: 40%;
         top: 7%;
        }
+    .mt-10 {
+        margin-top: -57%;
+    }
+    
 
 }
+
+.menu-link:hover {
+    border-bottom: 3px solid black;
+    margin: 0;
+  }
