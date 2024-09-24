@@ -89,7 +89,7 @@
     display: flex;
 }
 .h-30{
-    height: 76vh;
+    height: 121vh;
 }
 .h-105{
 height: 60vw;
@@ -170,12 +170,12 @@ height: 60vw;
         gap: 0 !important;
     }
     .h-30{
-        height: 30vh;
+        height: 37vh;
     }
     .w-15{
         width: 80%;
         height: 13%;
-        margin-left: 4%;
+        margin-left: -1%;
         margin-right: 2%;
     }
     .mb-6{
@@ -221,5 +221,4 @@ height: 60vw;
 
 .menu-link:hover {
     border-bottom: 3px solid black;
-    margin: 0;
-  }
+}
