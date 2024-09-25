@@ -112,13 +112,13 @@ cursor: pointer;
 }
 .menu{
     height: 30px;
-    width: 100%;
     margin-left: 2%;
     margin-right: 2%;
 }
 .menu ul{
     display: flex;
     gap: 4%;
+    justify-content: center;
 }
 .menu ul li{
     display: flex;
@@ -130,9 +130,6 @@ cursor: pointer;
 }
 .menu ul li :hover{
 border-bottom: 3px solid black;
-}
-.menu{
-    padding:0 16% ;
 }
 .landing-page{
     position: relative;
