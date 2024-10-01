@@ -155,7 +155,7 @@ height: 60vw;
 
 @media (max-width: 768px) {
     .img-cards .col-12.col-md-4 {
-        width: 100%; /* Stack items on smaller screens */
+        width: 100%; 
     }
 }
 @media  (max-width:700px){
@@ -173,7 +173,7 @@ height: 60vw;
         height: 37vh;
     }
     .w-15{
-        width: 80%;
+        width: 85%;
         height: 13%;
         margin-left: -1%;
         margin-right: 2%;
@@ -215,10 +215,21 @@ height: 60vw;
     .mt-10 {
         margin-top: -57%;
     }
-    
+}
+@media  (max-width:568px){
+.img-cards .col-md-2 {
+    width: 50%; 
+    padding-top: 5vw;
+}
+.mt-10{
+    margin-top: 30vw;
+}
 
 }
 
 .menu-link:hover {
     border-bottom: 3px solid black;
+}
+.h-5{
+    height: 2vw;
 }
