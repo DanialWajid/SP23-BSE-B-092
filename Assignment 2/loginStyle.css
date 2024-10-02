@@ -52,8 +52,8 @@ color: #00AFDB;
     outline: 2px solid #00AFDB; 
 }
 .rotate-text {
-    display: inline-block; /* Necessary for transform to work */
-    transform: rotate(-90deg); /* Rotate text by 45 degrees */
+    display: inline-block;
+    transform: rotate(-90deg);
 }
 .mt-10{
     margin-top:20% ;
