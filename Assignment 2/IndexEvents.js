@@ -26,11 +26,11 @@ for (let index = 0; index < array.length; index++) {
 
     element.onmouseenter = (event) => {
         element.classList.remove("bg-white");
-        element.classList.add("bg-secondary");
+        element.classList.add("bg-light");
     };
     
     element.onmouseleave = (event) => {
-        element.classList.remove("bg-secondary");
+        element.classList.remove("bg-light");
         element.classList.add("bg-white");
     };
 
