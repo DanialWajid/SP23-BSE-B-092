@@ -34,7 +34,7 @@
         </div>
     </div>
     <div id="logo" class="px-7 py-3 d-flex align-items-center justify-content-end gap-15   bg-white shadow-bottom">
-        <a href="#" class="position-absolute start-0 px-5   "><i class="bi bi-list fs-3 text-dark d-large-none"></i></a>
+        <a href="#" class="position-absolute start-0 px-5   "><i class="bi bi-list fs-3 text-dark d-large-none" id="ham"></i></a>
         <a href="#" class="  img-small "><img src="Primark_logo24.avif" alt="" class="img-fluid "></a>
         <div id="logo-icons " class="d-flex align-items-center ">
             <a href="#" class="text-decoration-none text-dark display-flex align-items-center  text-muted py-1 border-dark border-2 border-bottom px-4"><i class="bi bi-search fs-4 me-2 icon"></i><p class="d-flex mb-2">Search</p></a>
@@ -160,7 +160,7 @@
             <a href="#"class="text-decoration-none text-dark display-none-sm"><p>Newsroom</p></a>
         </div>
         </div>
-        <button class="d-flex align-items-center justify-content-center h-10 py-2 border-1 border-mute bg-white gap-2 position-absolute position-bm bottom-50 w-15 "><img src="United Kingdom.jpeg" alt="" class="img-sm ">United Kingdom, £ <i class="fa-solid fa-caret-down" style="color: #000000;"></i></button>
+        <button class="d-flex align-items-center justify-content-center  py-2 border-1 border-mute bg-white gap-2 position-absolute position-bm bottom-50 w-15 " id="lan"><img src="United Kingdom.jpeg" alt="" class="img-sm ">United Kingdom, £ <i class="fa-solid fa-caret-down" style="color: #000000;"></i></button>
     </div>
     <div class="text-center bg-dark text-light py-2"> <p class="m-0"> 2024 &copy; Primark Limited </p> </div>
     <button class=" d-flex align-items-center gap-3  position-fixed end-0 bottom-0 me-2 py-2 px-3 rounded-top fs-10 bg-blue border border-1 border-dark" >
@@ -168,7 +168,7 @@
         Chat With Us
     </button>
     
-   <!-- <div  class="w-100 h-100 d-flex flex-column justify-content-center align-items-center overlay" id="ad">
+    <div  class="w-100 h-100 d-flex flex-column justify-content-center align-items-center overlay" id="ad">
     <div class="d-flex flex-column justify-content-center align-items-center bg-top h-75  border rounded gap-5 p-5 position-relative">
        <button id="AdCancel"  href="" class="position-absolute top-0 end-0 p-2 bg-white border-0">
            <i class="fa-solid fa-xmark " style="color: #000000;"></i>
@@ -184,89 +184,90 @@
         </a>
         <p>Minimum Order £10</p>
     </div>
-   </div> -->
+   </div> 
 
-
-   <div class="d-flex flex-column gap-5 h-75 p-4">
-    <div id="d-head" class="d-flex  ">
-    <a href="#"> <i class="bi bi-x fs-2" style="color: #000000;" ></i></a>
-    <img src="Primark_logo24.avif" alt="">
-    <div>
-        <a href="#" id="heart" class="px-2 py-1"><i class="bi bi-heart  fs-5 text-dark " ></i></a>
-        <a href="login.html" id="user" class="px-2 py-1"> <i class="bi bi-person fs-4 text-dark"></i></a>
-        <a href="checkout.html" id="bag" class="px-2 py-1"><i class="bi bi-bag  fs-5 text-dark"></i></a>  
+<div class=" dropdown-container " id="drop">
+   <div class="d-flex flex-column gap-4  w-40 bg-white pe-5 scroll" >
+    <div id="d-head" class="d-flex align-items-center px-3">
+    <a href="#" id="drop-cancel"> <i class="bi bi-x fs-1" style="color: #000000;" ></i></a>
+    <div class="d-flex align-items-center gap-2 ">
+        <img src="Primark_logo24.avif" class="h-10">
+        <div class="d-flex ">
+            <a href="#" id="heart" class="px-2 py-1"><i class="bi bi-heart  fs-5 text-dark " ></i></a>
+            <a href="login.html" id="user" class="px-2 py-1"> <i class="bi bi-person fs-4 text-dark"></i></a>
+            <a href="checkout.html" id="bag" class="px-2 py-1"><i class="bi bi-bag  fs-5 text-dark"></i></a>  
+        </div>
     </div>
-    </div>
-    <div id="d-middle" class="d-flex flex-column gap-4" >
-        <div class="d-flex align-items-center ">
+</div>
+    <div id="d-middle" class="d-flex flex-column " >
+        <div class="d-flex align-items-center position-relative gap-3 ps-2"  >
             <img src="dp-women.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-8">
-                <p class="m-0" >WOMEN</p>
-                <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center ">
+                <p class="m-0 fw-bold" >WOMEN</p>
+                <i class="fa-solid fa-angle-right position-absolute end-0" style="color: #000000;"></i>
             </div>
             </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2 ">
             <img src="dp-cl.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-7">
-            <p class="m-0">CLICK & COLLECT</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center">
+            <p class="m-0 fw-bold">CLICK & COLLECT</p>
+            <i class="fa-solid fa-angle-right position-absolute end-0 " style="color: #000000;"></i>
         </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2">
             <img src="dp-men.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-10">
-            <p class="m-0">MEN</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center">
+            <p class="m-0 fw-bold">MEN</p>
+            <i class="fa-solid fa-angle-right position-absolute end-0 " style="color: #000000;"></i>
         </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2">
             <img src="dp-minors.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-10">
-            <p class="m-0">KIDS</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center">
+            <p class="m-0 fw-bold">KIDS</p>
+            <i class="fa-solid fa-angle-right  position-absolute end-0" style="color: #000000;"></i>
         </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2">
             <img src="dp-babie.avif" alt=""class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-10">
-            <p class="m-0">BABY</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center ">
+            <p class="m-0 fw-bold">BABY</p>
+            <i class="fa-solid fa-angle-right position-absolute end-0 " style="color: #000000;"></i>
         </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2">
             <img src="dp-ghost.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-55">
-            <p class="m-0">HALLOWEEN</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center ">
+            <p class="m-0 fw-bold">HALLOWEEN</p>
+            <i class="fa-solid fa-angle-right position-absolute end-0 " style="color: #000000;"></i>
         </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2">
             <img src="dp-home.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-9">
-            <p class="m-0">HOME</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center ">
+            <p class="m-0 fw-bold">HOME</p>
+            <i class="fa-solid fa-angle-right position-absolute end-0 " style="color: #000000;"></i>
         </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2">
             <img src="dp-collabs.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-7">
-            <p class="m-0">COLLABS</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center ">
+            <p class="m-0 fw-bold">COLLABS</p>
+            <i class="fa-solid fa-angle-right position-absolute end-0 " style="color: #000000;"></i>
             </div>
         </div>
-        <div class="d-flex align-items-center ">
+        <div class="d-flex align-items-center position-relative gap-3 ps-2">
             <img src="dp-beauty.avif" alt="" class="img-pfp rounded-circle ">
-            <div class="d-flex align-items-center gap-7">
-            <p class="m-0">BEAUTY</p>
-            <i class="fa-solid fa-angle-right  " style="color: #000000;"></i>
+            <div class="d-flex align-items-center ">
+            <p class="m-0 fw-bold">BEAUTY</p>
+            <i class="fa-solid fa-angle-right position-absolute end-0 " style="color: #000000;"></i>
             </div>
-        </div>
-    </div>
-    <div id="d-bottom" class="d-flex flex-column gap-3">
+        </div>    
+    <div id="d-bottom" class="d-flex flex-column w-40 gap-4 ps-3 py-3 border-top border-dark ">
         <div class="d-flex align-items-center gap-4">
             <i class="fa-regular fa-user fs-3 pe-2" style="color: #000000;"></i>
-            <p class="m-0">Accounnt</p>
+            <p class="m-0 ">Account</p>
         </div>
         <div class="d-flex align-items-center gap-4" >
             <i class="fa-solid fa-location-dot fs-3 pe-2" style="color: #000000;"></i>
@@ -298,5 +299,105 @@
         </div>
     </div>
    </div>
+   </div>
+</div>
+
+<div class="dropdown-right" id="lan-dp">
+    <div class="container px-6 py-4 w-45 position-absolute end-0 top-0 bg-white">
+      <div class="d-flex justify-content-between align-items-center">
+        <a href="#" class="text-dark position-absolute end-0">
+          <i class="bi bi-x fs-1" id="lan-cancel"></i>
+        </a>
+      </div>
+      <h1 class="align-left mb-4">Change Region</h1>
+      <p class="mb-4">
+        Changing the country/region that you shop from may affect factors including price, delivery options, language preferences, and product availability.
+      </p>
+  
+      <ul class="list-unstyled d-flex flex-column gap-3">
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="uk.png" alt="UK Flag" class="me-2 img-xsm"> United Kingdom, £
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="austria.png" alt="Austria Flag" class="me-2 img-xsm"> Österreic, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="belgium.jpg" alt="Belgium Flag" class="me-2 img-xsm"> Belgique / Français, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="belgium.jpg" alt="Belgium Flag" class="me-2 img-xsm"> België / Nederlands, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="czech.png" alt="Czech Flag" class="me-2 img-xsm"> Česká Republika, Kč
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="germany.png" alt="Germany Flag" class="me-2 img-xsm"> Deutschland, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="spain.png" alt="Spain Flag" class="me-2 img-xsm"> España, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="france.png" alt="France Flag" class="me-2 img-xsm"> France, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="ireland.png" alt="Ireland Flag" class="me-2 img-xsm"> Ireland, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="italy.png" alt="Italy Flag" class="me-2 img-xsm"> Italia, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="netherland.png" alt="Netherlands Flag" class="me-2 img-xsm"> Nederland, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="poland.png" alt="Poland Flag" class="me-2 img-xsm"> Polska, zł
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="portugal.png" alt="Portugal Flag" class="me-2 img-xsm"> Portugal, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="romania.png" alt="Romania Flag" class="me-2 img-xsm"> România, LEI
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="slovenia.png" alt="Slovenia Flag" class="me-2 img-xsm"> Slovenija, €
+          </a>
+        </li>
+        <li class="d-flex align-items-center mb-2">
+          <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
+            <img src="usa.png" alt="USA Flag" class="me-2 img-xsm"> United States, $
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  
 </body>
 </html>

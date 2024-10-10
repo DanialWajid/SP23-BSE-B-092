@@ -36,7 +36,39 @@ for (let index = 0; index < array.length; index++) {
 
 
 }
+let ham=document.getElementById("ham");
+ham.onclick=dropdown;
 
+let dropCancel=document.getElementById("drop-cancel");
+dropCancel.onclick=()=>{
+    let body=document.body;
+    drop.style.transform="translateX(-100%)";
+    body.style.overflowY="auto";
+}
 
+let lanDp=document.getElementById("lan-dp");
+let lan=document.getElementById("lan");
+
+lan.onclick=()=>{
+  lanDp.style.transform="translateX(0%)"
+  let body=document.body;
+  body.style.overflowY="hidden";
+}
+
+let lanCancel = document.getElementById("lan-cancel");
+lanCancel.onclick=()=>{
+    lanDp.style.transform="translateX(200%)";
+    let body=document.body;
+    body.style.overflowY="auto";
+}
+}
+
+let dropdown=()=>{
+    ham.onclick=()=>{
+        let drop=document.getElementById("drop");
+        drop.style.transform="translateX(0%)";
+        let body=document.body;
+        body.style.overflowY="hidden";
+    }
 }
 
