@@ -29,8 +29,8 @@ function pageLoad(){
         story.append(del);
     }
  
-    $('#del').on('click',storyDel);
-    $('#edit').on('click',function() {
+    story.on('click','#del',storyDel);
+    story.on('click','#edit',function() {
         storyEdit(response,this);});
      $('#add').on('click', create);
     
@@ -75,7 +75,7 @@ function storyDel() {
             break;
         }  
         else{
-            console.log("Not Found");
+            console.log("Error");
         }
     }
     console.log("Story ID:", storyId);
@@ -123,6 +123,8 @@ function create() {
         event.preventDefault();
         var title = updateTitle.val();
         var content = updateContent.val();
+        console.log(title);
+
         $.ajax({
             url: 'https://usmanlive.com/wp-json/api/stories/',
             method: 'POST',
