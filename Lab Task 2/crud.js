@@ -29,13 +29,13 @@ function pageLoad(){
         story.append(del);
     }
  
-    story.on('click','#del',storyDel);
-    story.on('click','#edit',function() {
+    $('#del').on('click',storyDel);
+    $('#edit').on('click',function() {
         storyEdit(response,this);});
-        story.on('click','#add',create);
+     $('#add').on('click', create);
     
 },
-error:function (response) { 
+error:function () { 
     alert("An error has occured")
  }
 });
@@ -66,7 +66,7 @@ function storyDel() {
   function storyEdit(response,editnbtn) {
     let edit = $(editnbtn); 
     let storyId = edit.attr('editID');
-    console.log('helo');
+   
     
     for (let index = 1; index < response.length; index++) {
         if (storyId==response[index].id) {
@@ -75,7 +75,7 @@ function storyDel() {
             break;
         }  
         else{
-            console.log("Error");
+            console.log("Not Found");
         }
     }
     console.log("Story ID:", storyId);
@@ -115,38 +115,24 @@ function storyDel() {
 
     });
 }
-
 function create() {
-     
+    let updateTitle = $('#storyTitle');
+    let updateContent = $('#storyContent');
 
-    let updateTitle=$('#storyTitle');
-    let updateContent=$('#storyContent');
-    updateId.val(storyId);
-    updateTitle.val(uptitle);
-    updateContent.val(upContent);
-
-    $('#storyForm').on('click',function (event) { 
+    $('#storyForm').on('submit', function (event) {
         event.preventDefault();
-       
-        var title=updateTitle.val();
-        var content=updateContent.val();
-        console.log(title);
+        var title = updateTitle.val();
+        var content = updateContent.val();
         $.ajax({
-        
-            url:'https://usmanlive.com/wp-json/api/stories/',
-            method:'POST',
-            data:{title,content},
-            success:function() {
+            url: 'https://usmanlive.com/wp-json/api/stories/',
+            method: 'POST',
+            data: { title, content },
+            success: function () {
                 location.reload();
             },
-            error:function () { 
-                alert("An error has occured")
-             }
-            
-        
-     });
-
+            error: function () {
+                alert("An error has occurred");
+            }
+        });
     });
-    
-    
 }
