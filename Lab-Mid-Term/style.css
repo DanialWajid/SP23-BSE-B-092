@@ -265,11 +265,7 @@ img {
   width: 100%;
   height: 100%;
 }
-.card {
-  display: flex;
-  flex-direction: row;
-  padding-bottom: 50px;
-}
+
 .author,
 .authorLower {
   font-size: 0.8rem;

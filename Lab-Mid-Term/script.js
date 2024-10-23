@@ -13,24 +13,43 @@ function show() {
         loadDescription3('project3.txt').hide(); 
         
     });
-
     hide1.click($("cOne"));
-}
+};
 
 function loadDescription1(fileName) {
+
     $.get(fileName, function(data) {
         $('#description1').html(data).show();
     });
-    var hide1=$("#cOne").append("<button>Hide</button>");
-
+    if (!$("#cTwo").find('.hide-btn').length){
+        $("#cOne").append("<button class='hide-btn'>Hide</button>");
+    }
+    $("#cOne").find('.hide-btn').click(function() {
+        $("#description1").hide();
+    });
 }
+
 function loadDescription2(fileName) {
     $.get(fileName, function(data) {
         $('#description2').html(data).show();
     });
+
+
+        $("#cTwo").append("<button class='hide-btn'>Hide</button>");
+
+    $("#cTwo").find('.hide-btn').click(function() {
+        $("#description2").hide();
+    });
 }
+
 function loadDescription3(fileName) {
     $.get(fileName, function(data) {
         $('#description3').html(data).show();
+    });
+
+        $("#cThree").append("<button class='hide-btn'>Hide</button>");
+
+    $("#cThree").find('.hide-btn').click(function() {
+        $("#description3").hide();
     });
 }
