@@ -33,6 +33,36 @@ function pageLoad(){
     story.on('click','#edit',function() {
         storyEdit(response,this);});
      $('#add').on('click', create);
+
+     $("#search").click(function() {
+        event.preventDefault();
+        let id = $("#storyId").val(); 
+        if (id !== "") {
+            console.log(id);
+            $.ajax({
+                type: "GET",
+                url: 'https://usmanlive.com/wp-json/api/stories/' + id,
+                success: function (response) {
+                    let story = $("#storiesList");
+                    story.empty(); 
+                    story.append(`<h3>Index</h3>`);
+                    story.append(`<div id="ID"><p>${response.id}</p></div>`);
+                    story.append(`<h2>Title:</h2>`);
+                    story.append(`<div id="title"><p>${response.title}</p></div>`);
+                    story.append(`<h2>Content:</h2>`);
+                    story.append(`<div id="content"><p>${response.content}</p></div>`);
+                    let edit = $(`<button id="edit" editID="${response.id}">Edit</button>`);
+                    edit.addClass('bg-light');
+                    story.append(edit);
+                    let del = $(`<button id="del" storyID="${response.id}">Delete</button>`); 
+                    del.addClass('bg-light');
+                    story.append(del);
+                }
+            });
+        } 
+    });
+    
+
     
 },
 error:function () { 
@@ -138,3 +168,7 @@ function create() {
         });
     });
 }
+
+
+
+
