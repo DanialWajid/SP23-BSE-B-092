@@ -13,7 +13,6 @@ function show() {
         loadDescription3('project3.txt').hide(); 
         
     });
-    hide1.click($("cOne"));
 };
 
 function loadDescription1(fileName) {
@@ -21,7 +20,7 @@ function loadDescription1(fileName) {
     $.get(fileName, function(data) {
         $('#description1').html(data).show();
     });
-    if (!$("#cTwo").find('.hide-btn').length){
+    if (!$("#cOne").find('.hide-btn').length){
         $("#cOne").append("<button class='hide-btn'>Hide</button>");
     }
     $("#cOne").find('.hide-btn').click(function() {
@@ -34,8 +33,9 @@ function loadDescription2(fileName) {
         $('#description2').html(data).show();
     });
 
-
-        $("#cTwo").append("<button class='hide-btn'>Hide</button>");
+    if (!$("#cTwo").find('.hide-btn').length){
+    $("#cTwo").append("<button class='hide-btn'>Hide</button>");
+    }
 
     $("#cTwo").find('.hide-btn').click(function() {
         $("#description2").hide();
@@ -46,9 +46,9 @@ function loadDescription3(fileName) {
     $.get(fileName, function(data) {
         $('#description3').html(data).show();
     });
-
+    if (!$("#cThree").find('.hide-btn').length){
         $("#cThree").append("<button class='hide-btn'>Hide</button>");
-
+    }
     $("#cThree").find('.hide-btn').click(function() {
         $("#description3").hide();
     });
