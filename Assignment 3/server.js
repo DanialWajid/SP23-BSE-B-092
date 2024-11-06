@@ -17,6 +17,9 @@ server.get("/login", (req, res) => {
 server.get("/signup", (req, res) => {
   res.render("signup");
 });
+server.get("/myportfolio", (req, res) => {
+  res.render("project");
+});
 
 server.listen(5001, () => {
   console.log("server started at localhost : 5000");
