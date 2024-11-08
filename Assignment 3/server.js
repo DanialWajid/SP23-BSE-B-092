@@ -5,9 +5,11 @@ server.set("view engine", "ejs");
 server.use(express.static("public"));
 
 server.get("/", (req, res) => {
+  res.render("project");
+});
+server.get("/index", (req, res) => {
   res.render("index");
 });
-
 server.get("/checkout", (req, res) => {
   res.render("checkout");
 });
