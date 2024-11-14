@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -17,11 +18,15 @@
   ></script>
   <link rel="stylesheet" href="./css/custom.css" />
   <link rel="icon" href="/images/icons8-p-16.png" type="image/png" />
-  <script src="/js/IndexEvents.js"></script>
+  <script src="./js/IndexEvents.js"></script>
   <script
     src="https://kit.fontawesome.com/b0a15acee7.js"
     crossorigin="anonymous"
   ></script>
+  <%-defineContent("styles-area") %>
+  <%-defineContent("js-area") %>
+
+     </head>
   <%- include('partials/top-menu') %>
   <body class="d-flex flex-column">
       <%-body%>
