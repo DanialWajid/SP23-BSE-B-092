@@ -1,0 +1,47 @@
+
+    <title>Admin - Product Management</title>
+      <h3 class="mb-4"><%= pageTitle %></h3>
+
+      
+      <a href="/admin/products/create" class="btn btn-info mb-4"
+        >Create New Product</a
+      >
+
+      
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price (£)</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (let index = 0; index < products.length; index++) { %>
+          <tr>
+            <td><%= products[index]._id %></td>
+            <td><%= products[index].name %></td>
+            <td><%= products[index].price %></td>
+            <td><%= products[index].description %></td>
+            <td>
+              <a
+                href="/admin/products/edit/<%= products[index]._id %>"
+                class="btn btn-warning btn-sm mr-2"
+                >Edit</a
+              >
+              <a
+                href="/admin/products/delete/<%= products[index]._id %>"
+                class="btn btn-danger btn-sm"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+
+  </body>
+</html>
