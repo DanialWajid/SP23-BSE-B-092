@@ -1,12 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../../model/product.model"); // Make sure to import the Product model
+const Product = require("../../model/product.model");
 
-// Route to fetch and display products
 router.get("/admin/product-details", async (req, res) => {
   try {
     const products = await Product.find();
-    console.log("Fetched products:", products); // Debugging log
+    console.log("Fetched products:", products);
 
     return res.render("admin/products", {
       layout: "adminLayout",
