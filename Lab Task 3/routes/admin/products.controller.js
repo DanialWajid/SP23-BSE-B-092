@@ -1,41 +1,28 @@
 const express = require("express");
-let router = express.Router();
-router.get("/admin/product-details", (req, res) => {
-  let products = [
-    {
-      _id: 1,
-      name: "T-Shirt",
-      type: "tshirt",
-      description: "Cotton T-Shirt with Graphic Design",
-      price: 25,
-    },
-    {
-      _id: 2,
-      name: "Jeans",
-      type: "jeans",
-      description: "Slim Fit Blue Jeans",
-      price: 40,
-    },
-    {
-      _id: 3,
-      name: "Jacket",
-      type: "jacket",
-      description: "Winter Jacket with Hood",
-      price: 60,
-    },
-    {
-      _id: 4,
-      name: "Sweater",
-      type: "sweater",
-      description: "Warm Woolen Sweater",
-      price: 35,
-    },
-  ];
+const router = express.Router();
 
-  return res.render("./admin/products", {
+// Adjust the path to point to the 'product' model in the 'model' folder
+const Product = require("../../model/product.model"); // Assuming 'product.js' is in the 'model' folder
+
+// Handle form submission
+router.post("/admin/products", async (req, res) => {
+  try {
+    // Create a new product document and save to MongoDB
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    console.log(req.body);
+
+    // Redirect or send success response
+    res.redirect("/admin/product-details"); // Redirect to products page
+  } catch (err) {
+    res.status(500).send("Error saving product: " + err.message);
+  }
+});
+
+router.get("/admin/products/create", (req, res) => {
+  return res.render("admin/createForm", {
     layout: "adminLayout",
-    pageTitle: "Product Details",
-    products,
+    pageTitle: "Products Management",
   });
 });
 

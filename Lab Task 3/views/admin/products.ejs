@@ -14,17 +14,17 @@
             <th>ID</th>
             <th>Name</th>
             <th>Price (£)</th>
-            <th>Description</th>
+            <th>type</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% for (let index = 0; index < products.length; index++) { %>
           <tr>
-            <td><%= products[index]._id %></td>
+            <td><%= products[index].id %></td>
             <td><%= products[index].name %></td>
             <td><%= products[index].price %></td>
-            <td><%= products[index].description %></td>
+            <td><%= products[index].type %></td>
             <td>
               <a
                 href="/admin/products/edit/"
