@@ -43,9 +43,7 @@
           <h2 class="text-center">Product Details</h2>
         </div>
         <div class="card-body">
-          <!-- Updated form attributes -->
-          <form id="productForm" method="POST" action="/admin/products">
-            <!-- Product ID -->
+          <form id="productForm" method="POST" action="/admin/product-details">
             <div class="form-group">
               <label for="id">Product ID</label>
               <input
@@ -58,7 +56,6 @@
               <div class="error-message">Product ID is required</div>
             </div>
 
-            <!-- Product Name -->
             <div class="form-group">
               <label for="name">Product Name</label>
               <input
@@ -71,7 +68,6 @@
               <div class="error-message">Product Name is required</div>
             </div>
 
-            <!-- Product Type -->
             <div class="form-group">
               <label for="type">Product Type</label>
               <select class="form-control query" id="type" name="type">
@@ -87,7 +83,6 @@
               <div class="error-message">Product Type is required</div>
             </div>
 
-            <!-- Product Price -->
             <div class="form-group">
               <label for="price">Price (£)</label>
               <input
@@ -100,7 +95,6 @@
               <div class="error-message">Price is required</div>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary btn-block">
               Submit
             </button>
