@@ -5,7 +5,6 @@ const Product = require("../../model/product.model");
 router.get("/admin/product-details", async (req, res) => {
   try {
     const products = await Product.find();
-    console.log("Fetched products:", products);
 
     return res.render("admin/products", {
       layout: "adminLayout",

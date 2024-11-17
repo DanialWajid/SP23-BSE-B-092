@@ -25,20 +25,10 @@
         </div>
         <div class="mainmenu">
           <ul>
-            <li>
-              <a href="#">Features</a>
-            </li>
-            <li>
-              <a href="#">About me</a>
-            </li>
-            <li>
-              <a href="#">Blog</a>
-            </li>
-            <li>
-              <a class="btn btn-light" href="#">
-                <i class="fa-solid fa-user"></i>Log In</a
-              >
-            </li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">About me</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a class="btn btn-light" href="#"> <i class="fa-solid fa-user"></i>Log In</a></li>
           </ul>
         </div>
         
@@ -49,18 +39,10 @@
         </button>
         <div class="mobile-menu">
           <ul>
-            <li>
-              <a href="/index">Home</a>
-            </li>
-            <li>
-              <a href="#">About Us</a>
-            </li>
-            <li>
-              <a href="#">Blog</a>
-            </li>
-            <li>
-              <a class="btn" href="#"> <i class="fas fa-user"></i> Log In </a>
-            </li>
+            <li><a href="/index">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a class="btn" href="#"> <i class="fas fa-user"></i> Log In </a></li>
           </ul>
         </div>
       </div>
@@ -81,10 +63,8 @@
           </div>
         </div>
       </div>
-  
     </section>
     <section class="video bg-black">
-        
       <div class="container my-5">
         <div class="row align-items-center">
             <div class="col-md-4 text-center">
@@ -104,26 +84,18 @@
           me.
         </h2>
         <div class="card">
-          <div  id="cOne" class="cardOne">
-            <p id="description1"></p>
-            <button id="proj1" class="bg-primary border-1 rounded p-3">Project One</button>
-          </div>
-          <div id="cTwo"  class="cardTwo">
-            <p id="description2"></p>
-            <button id="proj2" class="bg-primary border-1 rounded p-3" >Project Two</button>
-          </div>
-          <div  id="cThree" class="cardThree">
-            <p id="description3"></p>
-            <button id="proj3" class="bg-primary border-1 rounded p-3">Project Three</button>
-          </div>
+          <% for (let i = 0; i < projects.length; i++) { %>
+            <div class="cardOne">
+              <h1>Project <%=i+1%> </h1>
+              <p><strong><%= projects[i].name %></strong></p>
+              <p><%= projects[i].summary %></p>
+              <p><%= projects[i].description %></p>
+            </div>
+              <% } %>
         </div>
       </div>
     </section>
-    
 
-
-
-  
     <section class="last">
       <div class="container-black">
         <div class="dark-logo">

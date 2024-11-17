@@ -6,20 +6,21 @@ server.use(express.urlencoded({ extended: true }));
 server.set("view engine", "ejs");
 server.use(expressLayouts);
 server.use(express.static("public"));
-let adminProductsRouter = require("./routes/admin/products.controller");
-server.use(adminProductsRouter);
 server.use(express.json());
+let adminProductsRouter = require("./routes/admin/products.controller");
+let ProjectRouter = require("./routes/admin/project.controller");
+let adminProjectRouter = require("./routes/admin/projdetail.controller");
+server.use(adminProductsRouter);
+server.use(adminProjectRouter);
+server.use(ProjectRouter);
 
 let createRouter = require("./routes/admin/create.controller");
 server.use(createRouter);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/api")
+  .connect("mongodb://127.0.0.1:27017/project")
   .then(() => console.log("Connected! to mongoDB"));
 
-server.get("/", (req, res) => {
-  res.render("project");
-});
 server.get("/index", (req, res) => {
   res.render("index");
 });
