@@ -8,11 +8,18 @@ server.use(expressLayouts);
 server.use(express.static("public"));
 server.use(express.json());
 let adminProductsRouter = require("./routes/admin/products.controller");
+let adminCategoryRouter = require("./routes/admin/category.routes");
 let ProjectRouter = require("./routes/admin/project.controller");
 let adminProjectRouter = require("./routes/admin/projdetail.controller");
+let mainPageRouter = require("./routes/route.main");
+let womenPageRouter = require("./routes/route.women");
+
 server.use(adminProductsRouter);
+server.use(adminCategoryRouter);
 server.use(adminProjectRouter);
 server.use(ProjectRouter);
+server.use(mainPageRouter);
+server.use(womenPageRouter);
 
 let createRouter = require("./routes/admin/create.controller");
 server.use(createRouter);
@@ -21,8 +28,8 @@ mongoose
   .connect("mongodb://127.0.0.1:27017/project")
   .then(() => console.log("Connected! to mongoDB"));
 
-server.get("/index", (req, res) => {
-  res.render("index");
+server.get("/", (req, res) => {
+  res.render("project");
 });
 
 server.get("/checkout", (req, res) => {
