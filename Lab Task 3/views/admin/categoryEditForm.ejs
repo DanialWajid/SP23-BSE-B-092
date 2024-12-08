@@ -12,7 +12,7 @@
   <body>
     <div class="container mt-5">
       <h1>Edit Product Category</h1>
-      <form action="/admin/category/<%= category._id %>" method="POST">
+      <form action="/admin/category/<%= category._id %>" method="POST" enctype="multipart/form-data">
         <div class="mb-3"
           <label for="categoryName" class="form-label">Category Name</label>
           <input
@@ -26,20 +26,30 @@
           />
         </div>
 
-        <!-- Image Name -->
-        <div class="mb-3">
-          <label for="imageName" class="form-label">Image Name</label>
+        <!-- Image  -->
+     <div class="mb-3">
+  <label for="categoryImage" class="form-label">Current Category Image</label>
+  <div>
+    <!-- Show the image instead of the image name -->
+    <img
+      src="<%= category.categoryImage %>"
+      alt="Category Image"
+      class="img-thumbnail"
+      style="max-width: 150px; max-height: 150px;"
+    />
+  </div>
+</div>
+ <div class="mb-3">
+          <label for="categoryImage" class="form-label">Upload Image</label>
           <input
-            type="text"
+            type="file"
             class="form-control"
-            id="imageName"
-            name="imageName"
-            value="<%= category.imageName %>"  
-            placeholder="Enter image file name (e.g., image.jpg)"
-            required
+            id="categoryImage"
+            name="categoryImage"
+            accept="image/*"
+
           />
         </div>
-
         <!-- Category Type -->
         <div class="mb-3">
           <label for="type" class="form-label">Category Type</label>

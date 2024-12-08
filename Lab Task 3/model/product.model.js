@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
+
 const productSchema = mongoose.Schema(
   {
-    id: {
-      type: Number,
-      required: true,
-      index: true,
-      unique: true,
-    },
     name: {
       type: String,
       required: true,
@@ -14,15 +9,36 @@ const productSchema = mongoose.Schema(
       trim: true,
       index: true,
     },
-    type: {
-      type: String,
+    price: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    sizesAvailable: {
+      type: [String], // Array of available sizes
       required: true,
     },
-    description: { type: String, lowercase: true, trim: true },
-    price: { type: Number, required: true, min: 0 },
+    categoryType: {
+      type: String, // String for category type (e.g., "Men", "Women")
+      required: true,
+    },
+    itemType: {
+      type: String, // String for item type (e.g., "T-shirt", "Jeans")
+      required: true,
+    },
+    colors: {
+      type: [String], // Array of available colors
+      required: true,
+    },
+    image1: {
+      type: String, // URL or file path to the first image
+    },
+    image2: {
+      type: String, // URL or file path to the second image
+    },
   },
   { timestamps: true }
 );
 
-const product = mongoose.model("product", productSchema);
-module.exports = product;
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;

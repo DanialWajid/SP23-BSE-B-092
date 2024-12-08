@@ -12,7 +12,12 @@
   <body>
     <div class="container mt-5">
       <h1>Create Product Category</h1>
-      <form action="/admin/category" method="POST">
+      <!-- Add enctype="multipart/form-data" for file uploads -->
+      <form
+        action="/admin/category"
+        method="POST"
+        enctype="multipart/form-data"
+      >
         <!-- Category Name -->
         <div class="mb-3">
           <label for="categoryName" class="form-label">Category Name</label>
@@ -26,15 +31,15 @@
           />
         </div>
 
-        <!-- Image Name (as text input) -->
+        <!-- Image File Input (for file upload) -->
         <div class="mb-3">
-          <label for="imageName" class="form-label">Image Name</label>
+          <label for="categoryImage" class="form-label">Upload Image</label>
           <input
-            type="text"
+            type="file"
             class="form-control"
-            id="imageName"
-            name="imageName"
-            placeholder="Enter image file name (e.g., image.jpg)"
+            id="categoryImage"
+            name="categoryImage"
+            accept="image/*"
             required
           />
         </div>

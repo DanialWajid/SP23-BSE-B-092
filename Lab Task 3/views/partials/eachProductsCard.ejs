@@ -1,0 +1,57 @@
+<div class="position-relative text-center my-5">
+  <!-- Heading Section -->
+  <div
+    class="position-relative text-white text-center w-100"
+    style="background-color: black; padding: 20px; z-index: 1"
+  >
+    <p class="text-uppercase fw-light mb-2"><%= heading.subtitle %></p>
+    <h1 class="display-4 fw-bold mb-3"><%= heading.title %></h1>
+    <button class="btn btn-primary text-uppercase">
+      <%= heading.buttonText %>
+    </button>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <div
+    class="position-absolute top-50 start-0 translate-middle-y"
+    style="z-index: 3; left: 0"
+  >
+    <button class="btn btn-outline-dark" id="prev-arrow">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+  </div>
+  <div
+    class="position-absolute top-50 end-0 translate-middle-y"
+    style="z-index: 3; right: 0"
+  >
+    <button class="btn btn-outline-dark" id="next-arrow">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- Cards Section -->
+  <div class="container px-5 mt-5 pt-5" style="z-index: 2; margin-top: 150px">
+    <!-- Increased margin-top -->
+    <div id="card-container" class="row justify-content-center">
+      <% dynamicCards.forEach(function(card, index) { %>
+      <div class="col-12 col-md-4 mb-4" data-index="<%= index %>">
+        <div class="card border-0 shadow text-center">
+          <a href="<%= card.link %>" class="text-decoration-none text-dark">
+            <img
+              src="<%= card.image %>"
+              alt="<%= card.alt %>"
+              class="card-img-top img-fluid"
+              style="max-height: 300px; object-fit: cover"
+            />
+            <div class="card-body">
+              <p class="fw-bold mb-2"><%= card.text %></p>
+              <p class="text-muted mb-1">Price: <%= card.price %></p>
+              <p class="text-muted">Colors: <%= card.colors %></p>
+            </div>
+          </a>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+</div>

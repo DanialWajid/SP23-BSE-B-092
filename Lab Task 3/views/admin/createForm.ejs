@@ -43,19 +43,13 @@
           <h2 class="text-center">Product Details</h2>
         </div>
         <div class="card-body">
-          <form id="productForm" method="POST" action="/admin/product-details">
-            <div class="form-group">
-              <label for="id">Product ID</label>
-              <input
-                type="text"
-                class="form-control query"
-                id="id"
-                name="id"
-                placeholder="Enter Product ID"
-              />
-              <div class="error-message">Product ID is required</div>
-            </div>
-
+          <form
+            id="productForm"
+            method="POST"
+            action="/product-details"
+            enctype="multipart/form-data"
+          >
+            <!-- Product Name -->
             <div class="form-group">
               <label for="name">Product Name</label>
               <input
@@ -68,21 +62,36 @@
               <div class="error-message">Product Name is required</div>
             </div>
 
+            <!-- Category Type Dropdown -->
             <div class="form-group">
-              <label for="type">Product Type</label>
-              <select class="form-control query" id="type" name="type">
-                <option value="">Select Type</option>
-                <option value="tshirt">T-Shirt</option>
-                <option value="jeans">Jeans</option>
-                <option value="jacket">Jacket</option>
-                <option value="dress">Dress</option>
-                <option value="skirt">Skirt</option>
-                <option value="sweater">Sweater</option>
-                <option value="shoes">Shoes</option>
+              <label for="categoryType">Category Type</label>
+              <select
+                class="form-control query"
+                id="categoryType"
+                name="categoryType"
+              >
+                <option value="" disabled selected>Select Category Type</option>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Kids">Kids</option>
+                <option value="Click & Collect">Click & Collect</option>
+                <option value="Home">Home</option>
+                <option value="Baby">Baby</option>
               </select>
-              <div class="error-message">Product Type is required</div>
+              <div class="error-message">Category Type is required</div>
             </div>
 
+            <!-- Item Type Dropdown (dynamically populated) -->
+            <div class="form-group">
+              <label for="itemType">Item Type</label>
+              <select class="form-control query" id="itemType" name="itemType">
+                <option value="" disabled selected>Select Item Type</option>
+                <!-- Dynamically populate based on category -->
+              </select>
+              <div class="error-message">Item Type is required</div>
+            </div>
+
+            <!-- Price -->
             <div class="form-group">
               <label for="price">Price (£)</label>
               <input
@@ -95,6 +104,88 @@
               <div class="error-message">Price is required</div>
             </div>
 
+            <!-- Sizes Available -->
+            <div class="form-group">
+              <label for="sizesAvailable">Sizes Available</label><br />
+              <label
+                ><input type="checkbox" name="sizesAvailable" value="XXS" />
+                XXS</label
+              ><br />
+              <label
+                ><input type="checkbox" name="sizesAvailable" value="XS" />
+                XS</label
+              ><br />
+              <label
+                ><input type="checkbox" name="sizesAvailable" value="S" />
+                S</label
+              ><br />
+              <label
+                ><input type="checkbox" name="sizesAvailable" value="M" />
+                M</label
+              ><br />
+              <label
+                ><input type="checkbox" name="sizesAvailable" value="L" />
+                L</label
+              ><br />
+              <label
+                ><input type="checkbox" name="sizesAvailable" value="XL" />
+                XL</label
+              ><br />
+              <label
+                ><input type="checkbox" name="sizesAvailable" value="XXL" />
+                XXL</label
+              ><br />
+              <div class="error-message">At least one size is required</div>
+            </div>
+
+            <!-- Colors (Checkboxes) -->
+            <div class="form-group">
+              <label for="colors">Colors</label><br />
+              <label
+                ><input type="checkbox" name="colors" value="Red" /> Red</label
+              ><br />
+              <label
+                ><input type="checkbox" name="colors" value="Blue" />
+                Blue</label
+              ><br />
+              <label
+                ><input type="checkbox" name="colors" value="Black" />
+                Black</label
+              ><br />
+              <label
+                ><input type="checkbox" name="colors" value="White" />
+                White</label
+              ><br />
+              <div class="error-message">At least one color is required</div>
+            </div>
+
+            <!-- Product Image -->
+            <!-- <div class="form-group">
+              <label for="productImage">Product Image</label>
+              <input
+                type="file"
+                class="form-control query"
+                id="productImage"
+                name="productImage"
+                accept="image/*"
+              />
+              <div class="error-message">Product Image is required</div>
+            </div> -->
+
+            <!-- Thumbnail Image -->
+            <!-- <div class="form-group">
+              <label for="thumbnailImage">Thumbnail Image</label>
+              <input
+                type="file"
+                class="form-control query"
+                id="thumbnailImage"
+                name="thumbnailImage"
+                accept="image/*"
+              />
+              <div class="error-message">Thumbnail Image is required</div>
+            </div> -->
+
+            <!-- Submit Button -->
             <button type="submit" class="btn btn-primary btn-block">
               Submit
             </button>
@@ -102,5 +193,33 @@
         </div>
       </div>
     </div>
+    <script>
+      document
+        .getElementById("categoryType")
+        .addEventListener("change", function () {
+          const categoryType = this.value; // Get selected category type (e.g., "Women", "Men", etc.)
+          const itemTypeDropdown = document.getElementById("itemType");
+
+          // Fetch item types from the backend based on the selected category type
+          fetch(`/get-item-types?type=${categoryType}`)
+            .then((response) => response.json())
+            .then((itemTypes) => {
+              // Clear existing options
+              itemTypeDropdown.innerHTML =
+                '<option value="" disabled selected>Select Item Type</option>';
+
+              // Add new options based on category type
+              itemTypes.forEach(function (itemType) {
+                const option = document.createElement("option");
+                option.value = itemType;
+                option.textContent = itemType;
+                itemTypeDropdown.appendChild(option);
+              });
+            })
+            .catch((error) => {
+              console.error("Error fetching item types:", error);
+            });
+        });
+    </script>
   </body>
 </html>
