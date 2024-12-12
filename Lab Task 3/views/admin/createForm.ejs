@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-MRk1OhxM8QGgX5VBfBgRLlgzDVRyodFAPbC0ebzu6WzUfu4Ddo7s5YI31UW1t8N"
+      crossorigin="anonymous"
+    />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="/js/createForm.js"></script>
@@ -104,63 +110,90 @@
               <div class="error-message">Price is required</div>
             </div>
 
-            <!-- Sizes Available -->
+            <!-- Sizes Available (Row-wise alignment) -->
             <div class="form-group">
-              <label for="sizesAvailable">Sizes Available</label><br />
-              <label
-                ><input type="checkbox" name="sizesAvailable" value="XXS" />
-                XXS</label
-              ><br />
-              <label
-                ><input type="checkbox" name="sizesAvailable" value="XS" />
-                XS</label
-              ><br />
-              <label
-                ><input type="checkbox" name="sizesAvailable" value="S" />
-                S</label
-              ><br />
-              <label
-                ><input type="checkbox" name="sizesAvailable" value="M" />
-                M</label
-              ><br />
-              <label
-                ><input type="checkbox" name="sizesAvailable" value="L" />
-                L</label
-              ><br />
-              <label
-                ><input type="checkbox" name="sizesAvailable" value="XL" />
-                XL</label
-              ><br />
-              <label
-                ><input type="checkbox" name="sizesAvailable" value="XXL" />
-                XXL</label
-              ><br />
+              <label for="sizesAvailable">Sizes Available</label>
+              <div class="row">
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="sizesAvailable" value="XXS" />
+                    XXS</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="sizesAvailable" value="XS" />
+                    XS</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="sizesAvailable" value="S" />
+                    S</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="sizesAvailable" value="M" />
+                    M</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="sizesAvailable" value="L" />
+                    L</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="sizesAvailable" value="XL" />
+                    XL</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="sizesAvailable" value="XXL" />
+                    XXL</label
+                  >
+                </div>
+              </div>
               <div class="error-message">At least one size is required</div>
             </div>
 
-            <!-- Colors (Checkboxes) -->
+            <!-- Colors (Row-wise alignment) -->
             <div class="form-group">
-              <label for="colors">Colors</label><br />
-              <label
-                ><input type="checkbox" name="colors" value="Red" /> Red</label
-              ><br />
-              <label
-                ><input type="checkbox" name="colors" value="Blue" />
-                Blue</label
-              ><br />
-              <label
-                ><input type="checkbox" name="colors" value="Black" />
-                Black</label
-              ><br />
-              <label
-                ><input type="checkbox" name="colors" value="White" />
-                White</label
-              ><br />
+              <label for="colors">Colors</label>
+              <div class="row">
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="colors" value="Red" />
+                    Red</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="colors" value="Blue" />
+                    Blue</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="colors" value="Black" />
+                    Black</label
+                  >
+                </div>
+                <div class="col-md-2 col-sm-4">
+                  <label
+                    ><input type="checkbox" name="colors" value="White" />
+                    White</label
+                  >
+                </div>
+              </div>
               <div class="error-message">At least one color is required</div>
             </div>
 
             <!-- Product Image -->
-            <!-- <div class="form-group">
+            <div class="form-group">
               <label for="productImage">Product Image</label>
               <input
                 type="file"
@@ -170,20 +203,7 @@
                 accept="image/*"
               />
               <div class="error-message">Product Image is required</div>
-            </div> -->
-
-            <!-- Thumbnail Image -->
-            <!-- <div class="form-group">
-              <label for="thumbnailImage">Thumbnail Image</label>
-              <input
-                type="file"
-                class="form-control query"
-                id="thumbnailImage"
-                name="thumbnailImage"
-                accept="image/*"
-              />
-              <div class="error-message">Thumbnail Image is required</div>
-            </div> -->
+            </div>
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary btn-block">
@@ -193,22 +213,20 @@
         </div>
       </div>
     </div>
+
     <script>
       document
         .getElementById("categoryType")
         .addEventListener("change", function () {
-          const categoryType = this.value; // Get selected category type (e.g., "Women", "Men", etc.)
+          const categoryType = this.value;
           const itemTypeDropdown = document.getElementById("itemType");
 
-          // Fetch item types from the backend based on the selected category type
           fetch(`/get-item-types?type=${categoryType}`)
             .then((response) => response.json())
             .then((itemTypes) => {
-              // Clear existing options
               itemTypeDropdown.innerHTML =
                 '<option value="" disabled selected>Select Item Type</option>';
 
-              // Add new options based on category type
               itemTypes.forEach(function (itemType) {
                 const option = document.createElement("option");
                 option.value = itemType;

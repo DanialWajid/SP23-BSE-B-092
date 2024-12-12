@@ -12,6 +12,7 @@
       <th>Type</th>
       <th>Link Name</th>
       <th>Actions</th>
+      <th>Image</th>
     </tr>
   </thead>
   <tbody>
@@ -20,6 +21,15 @@
       <td><%= categories[index].categoryName %></td>
       <td><%= categories[index].type %></td>
       <td><%= categories[index].linkName %></td>
+      <td>
+        <% if (categories[index].categoryImage) { %>
+        <img
+          src="<%= categories[index].categoryImage %>"
+          alt="<%= categories[index].name %>"
+          width="80"
+        />
+        <% } else { %> No image available <% } %>
+      </td>
       <td>
         <a
           href="/admin/category/edit/<%= categories[index]._id %>"

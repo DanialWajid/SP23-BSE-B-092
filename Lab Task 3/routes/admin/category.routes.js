@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const categoryController = require("../admin/category.controller");
-const upload = require("../../middleware/multer.middleware");
+const { uploadCategoryImage } = require("../../middleware/multer.middleware");
 
 const Category = require("../../model/category.model");
 router.post(
   "/admin/category",
-  upload.single("categoryImage"),
+  uploadCategoryImage.single("categoryImage"),
   async (req, res) => {
     try {
       const { categoryName, type, linkName } = req.body;
@@ -49,9 +49,10 @@ router.get("/admin/category/details", async (req, res) => {
 router.get("/admin/category/delete/:id", categoryController.delCategory);
 
 router.get("/admin/category/edit/:id", categoryController.editCategory);
+
 router.post(
   "/admin/category/:id",
-  upload.single("categoryImage"), // Handle file upload
+  uploadCategoryImage.single("categoryImage"),
   async (req, res) => {
     try {
       const categoryId = req.params.id;

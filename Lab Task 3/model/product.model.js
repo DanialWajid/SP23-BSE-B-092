@@ -6,13 +6,10 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
       lowercase: true,
-      trim: true,
-      index: true,
     },
     price: {
       type: Number,
       required: true,
-      min: 0,
     },
     sizesAvailable: {
       type: [String], // Array of available sizes
@@ -30,11 +27,9 @@ const productSchema = mongoose.Schema(
       type: [String], // Array of available colors
       required: true,
     },
-    image1: {
+    productImage: {
       type: String, // URL or file path to the first image
-    },
-    image2: {
-      type: String, // URL or file path to the second image
+      required: true,
     },
   },
   { timestamps: true }

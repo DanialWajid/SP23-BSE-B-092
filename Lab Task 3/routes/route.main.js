@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const Product = require("../model/product.model");
 
 router.get("/main", (req, res) => {
   const heroContent = {
@@ -47,6 +48,17 @@ router.get("/main", (req, res) => {
   ];
 
   res.render("index", { heroContent, dynamicCards });
+});
+router.get("/products/:productId", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.productId);
+
+    // Render the product detail page
+    res.render("partials/productDetails", { product });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching product details: " + err.message);
+  }
 });
 
 module.exports = router;

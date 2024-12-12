@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../model/category.model");
+const Product = require("../model/product.model");
 
 router.get("/women", async (req, res) => {
   try {
@@ -23,44 +24,39 @@ router.get("/women", async (req, res) => {
     res.status(500).send("Error fetching categories: " + err.message);
   }
 });
-
-router.get("/shoes", async (req, res) => {
+router.get("/:itemType", async (req, res) => {
   try {
+    const { itemType } = req.params; // Get the itemType from the URL
+
     const heading = {
-      title: "Party Season",
-      subtitle: "Our top picks, whatever the RSVP!",
-      buttonText: "Shop Partywear",
+      title: itemType.charAt(0).toUpperCase() + itemType.slice(1), // Capitalize first letter
+      subtitle: `Our top picks for ${itemType}`,
     };
 
-    const dynamicCards = [
-      {
-        link: "/velvet-bow-heels",
-        image:
-          "https://res.cloudinary.com/do35a2aay/image/upload/v1733663050/categoryImage/1733663049657_shoes.avif.jpg",
-        alt: "Velvet Bow Heels",
-        text: "VELVET BOW HEELS",
-        price: "£16.00",
-        colors: "2 colours",
-      },
-      {
-        link: "/sequin-midi-dress",
-        image:
-          "https://res.cloudinary.com/do35a2aay/image/upload/v1733662984/categoryImage/1733662984002_bags.jpg.jpg",
-        alt: "Sequin Long Sleeve Midi Dress",
-        text: "SEQUIN LONG SLEEVE MIDI DRESS",
-        price: "£25.00",
-        colors: "1 colour",
-      },
-    ];
+    // Query the database for products with the given categoryType and itemType
+    const products = await Product.find({
+      categoryType: "Women", // Hardcoded categoryType ("Women") as an example
+      itemType: itemType, // Dynamically use itemType from URL
+    });
 
-    // Specify the layout and pass data to the view
+    // Create dynamicCards from the database results
+    const dynamicCards = products.map((product) => ({
+      link: `/products/${product._id}`, // Link to the product details page
+      image: product.productImage, // Assuming 'productImage' is stored in the database
+      alt: product.name,
+      text: product.name.toUpperCase(), // Product name in uppercase
+      price: `£${product.price}`,
+      colors: `${product.colors.length} colours`, // Assuming 'colors' is an array of color options
+    }));
+
+    // Render the products page, passing the heading and dynamicCards to the view
     res.render("productsIndex", {
       heading,
       dynamicCards,
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error rendering partywear page: " + err.message);
+    res.status(500).send("Error rendering category page: " + err.message);
   }
 });
 

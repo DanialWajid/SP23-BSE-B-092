@@ -1,38 +1,59 @@
-
+<!DOCTYPE html>
+<html lang="en">
+  <head>
     <title>Admin - Product Management</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
       <h3 class="mb-4"><%= pageTitle %></h3>
 
-      
       <a href="/admin/products/create" class="btn btn-info mb-4"
         >Create New Product</a
       >
 
-      
       <table class="table table-striped table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Price (£)</th>
-            <th>type</th>
+            <th>Category Type</th>
+            <th>Item Type</th>
+            <th>Sizes Available</th>
+            <th>Colors</th>
+            <th>Product Image</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <% for (let index = 0; index < products.length; index++) { %>
           <tr>
-            <td><%= products[index].id %></td>
             <td><%= products[index].name %></td>
             <td><%= products[index].price %></td>
-            <td><%= products[index].type %></td>
+            <td><%= products[index].categoryType %></td>
+            <td><%= products[index].itemType %></td>
+            <td><%= products[index].sizesAvailable.join(", ") %></td>
+            <td><%= products[index].colors.join(", ") %></td>
+            <td>
+              <% if (products[index].productImage) { %>
+              <img
+                src="<%= products[index].productImage %>"
+                alt="<%= products[index].name %>"
+                width="80"
+              />
+              <% } else { %> No image available <% } %>
+            </td>
             <td>
               <a
-                href="/admin/products/edit/"
+                href="/admin/products/edit/<%= products[index]._id %>"
                 class="btn btn-warning btn-sm mr-2"
                 >Edit</a
               >
               <a
-                href="/admin/products/delete/"
+                href="/admin/products/delete/<%= products[index]._id %>"
                 class="btn btn-danger btn-sm"
                 >Delete</a
               >
@@ -42,6 +63,5 @@
         </tbody>
       </table>
     </div>
-
   </body>
 </html>

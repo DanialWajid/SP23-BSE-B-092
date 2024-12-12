@@ -3,6 +3,7 @@ const cloudinary = require("cloudinary").v2;
 const dotenv = require("dotenv");
 
 dotenv.config({ path: ".env.local" });
+
 cloudinary.config({
   cloud_name: "do35a2aay",
   api_key: "619267614658392",
@@ -10,7 +11,7 @@ cloudinary.config({
 });
 
 const createCloudinaryStorage = ({
-  folder = "categoryImage",
+  folder = "defaultFolder",
   resourceType = "image",
   format = async (req, file) => {
     const mimeType = file.mimetype.split("/")[1];
