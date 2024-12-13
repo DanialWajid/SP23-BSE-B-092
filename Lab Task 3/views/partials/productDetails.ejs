@@ -10,22 +10,69 @@
     />
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <style>
+      .product-image-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+      }
+
       .product-image {
+        transition: transform 0.3s ease; /* Smooth zoom effect */
         max-width: 100%;
         object-fit: cover;
+      }
+
+      /* Zoom effect on hover */
+      .product-image-container:hover .product-image {
+        transform: scale(1.5); /* Adjust the zoom factor as needed */
+      }
+
+      /* Round color button styling */
+      .color-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        margin-right: 10px;
+      }
+
+      /* Align the Add to Cart button */
+      #add-to-cart-btn {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 10px;
+      }
+
+      /* Stylish heading for cart */
+      .cart-heading {
+        font-size: 28px;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
       }
     </style>
   </head>
   <body>
     <div class="container mt-5">
+      <!-- Cart Heading -->
+      <div class="cart-heading">
+        <i class="fas fa-shopping-cart"></i> Your Cart Details
+      </div>
+
       <!-- Product Details Section -->
       <div class="row">
         <div class="col-md-6">
-          <img
-            src="<%= product.productImage %>"
-            alt="<%= product.name %>"
-            class="product-image"
-          />
+          <div class="product-image-container">
+            <img
+              src="<%= product.productImage %>"
+              alt="<%= product.name %>"
+              class="product-image img-fluid"
+            />
+          </div>
         </div>
         <div class="col-md-6">
           <h2><%= product.name %></h2>
@@ -43,7 +90,7 @@
               class="btn btn-outline-primary size-button"
               data-size="<%= size %>"
             >
-              <%= product.size %>
+              <%= size %>
             </button>
             <% }); %>
           </div>
@@ -69,7 +116,7 @@
           <% } %>
 
           <!-- Add to Cart Button -->
-          <button class="btn btn-success mt-3" id="add-to-cart-btn">
+          <button class="btn btn-success" id="add-to-cart-btn">
             <i class="fas fa-shopping-cart"></i> Add to Cart
           </button>
         </div>
