@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= product.name %> - Details</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+      .product-image-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .product-image {
+        transition: transform 0.3s ease; /* Smooth zoom effect */
+        max-width: 100%;
+        object-fit: cover;
+      }
+
+      /* Zoom effect on hover */
+      .product-image-container:hover .product-image {
+        transform: scale(1.5); /* Adjust the zoom factor as needed */
+      }
+
+      /* Round color button styling */
+      .color-button {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid #ccc;
+        margin-right: 10px;
+      }
+
+      /* Align the Add to Cart button */
+      #add-to-cart-btn {
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+        padding: 10px;
+      }
+
+      /* Stylish heading for cart */
+      .cart-heading {
+        font-size: 28px;
+        font-weight: bold;
+        color: #007bff;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <!-- Cart Heading -->
+      <div class="cart-heading">
+        <i class="fas fa-shopping-cart"></i> Your Cart Details
+      </div>
+
+      <!-- Product Details Section -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="product-image-container">
+            <img
+              src="<%= product.productImage %>"
+              alt="<%= product.name %>"
+              class="product-image img-fluid"
+            />
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h2><%= product.name %></h2>
+          <p class="text-muted">Price: £<%= product.price %></p>
+          <p><%= product.description %></p>
+
+          <!-- Size Selection -->
+          <% if (product.sizesAvailable && product.sizesAvailable.length > 0) {
+          %>
+          <h4>Select Size:</h4>
+          <div class="btn-group" role="group" aria-label="Size options">
+            <% product.sizesAvailable.forEach(function(size) { %>
+            <button
+              type="button"
+              class="btn btn-outline-primary size-button"
+              data-size="<%= size %>"
+            >
+              <%= size %>
+            </button>
+            <% }); %>
+          </div>
+          <% } else { %>
+          <p>No sizes available.</p>
+          <% } %>
+
+          <!-- Color Selection -->
+          <% if (product.colors && product.colors.length > 0) { %>
+          <h4>Select Color:</h4>
+          <div class="btn-group" role="group" aria-label="Color options">
+            <% product.colors.forEach(function(color) { %>
+            <button
+              type="button"
+              class="btn btn-outline-secondary color-button"
+              style="background-color: <%= color %>"
+              data-color="<%= color %>"
+            ></button>
+            <% }); %>
+          </div>
+          <% } else { %>
+          <p>No colors available.</p>
+          <% } %>
+
+          <!-- Add to Cart Button -->
+          <button class="btn btn-success" id="add-to-cart-btn">
+            <i class="fas fa-shopping-cart"></i> Add to Cart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+      // Add event listeners for size and color selection
+      let selectedSize = null;
+      let selectedColor = null;
+
+      $(".size-button").on("click", function () {
+        selectedSize = $(this).data("size");
+        $(".size-button").removeClass("active");
+        $(this).addClass("active");
+      });
+
+      $(".color-button").on("click", function () {
+        selectedColor = $(this).data("color");
+        $(".color-button").removeClass("active");
+        $(this).addClass("active");
+      });
+
+      $("#add-to-cart-btn").on("click", function () {
+        if (!selectedSize || !selectedColor) {
+          alert("Please select both a size and a color.");
+          return;
+        }
+
+        // For now, just log the selected size and color
+        console.log("Added to cart: ", {
+          productId: "<%= product._id %>",
+          selectedSize,
+          selectedColor,
+        });
+
+        // Add logic to add to cart (e.g., send data to backend or local storage)
+      });
+    </script>
+  </body>
+</html>

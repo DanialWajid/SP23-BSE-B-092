@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../model/category.model");
+const Product = require("../model/product.model");
 
 router.get("/kids", async (req, res) => {
   try {
@@ -23,7 +24,7 @@ router.get("/kids", async (req, res) => {
     res.status(500).send("Error fetching categories: " + err.message);
   }
 });
-router.get("/:itemType", async (req, res) => {
+router.get("/category/kids/:itemType", async (req, res) => {
   try {
     const { itemType } = req.params;
 
@@ -42,7 +43,6 @@ router.get("/:itemType", async (req, res) => {
       image: product.productImage,
       alt: product.name,
       text: product.name.toUpperCase(),
-
       price: `£${product.price}`,
       colors: `${product.colors.length} colours`,
     }));
