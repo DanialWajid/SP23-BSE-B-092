@@ -1,37 +1,14 @@
-// Authorization Middleware (checks user role and verification)
-function authorizeRole(allowedRoles) {
-  return async (req, res, next) => {
-    if (!req.session || !req.session.userId) {
-      return res.status(401).send("You must be logged in to access this page");
-    }
+const authMiddleware = (req, res, next) => {
+  // Check if the user is already logged in and has the required role
+  if (
+    req.session.userRole === "Admin" ||
+    req.session.userRole === "SuperAdmin"
+  ) {
+    return next(); // Allow the request to proceed
+  }
 
-    try {
-      const user = await User.findById(req.session.userId);
+  // If not authenticated, redirect to the login page
+  return res.redirect("/");
+};
 
-      if (!user) {
-        return res.status(401).send("User not found");
-      }
-
-      // Check if the user is verified
-      if (!user.verified) {
-        return res
-          .status(403)
-          .send("Please verify your email to access this page");
-      }
-
-      // Check if the user has the right role
-      if (!allowedRoles.includes(user.role)) {
-        return res
-          .status(403)
-          .send("You do not have permission to access this page");
-      }
-
-      // Attach user to the request object
-      req.user = user;
-
-      return next(); // Proceed to next middleware/route handler
-    } catch (err) {
-      return res.status(500).send("Server error");
-    }
-  };
-}
+module.exports = { authMiddleware };

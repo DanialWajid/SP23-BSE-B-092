@@ -4,6 +4,28 @@ const Category = require("../../model/category.model");
 const Product = require("../../model/product.model");
 const { uploadProductImage } = require("../../middleware/multer.middleware");
 
+router.get("/admin/product-details", async (req, res) => {
+  try {
+    console.log("role:", req.session.userRole);
+    if (
+      req.session.userRole !== "Admin" &&
+      req.session.userRole !== "SuperAdmin"
+    ) {
+      return res.redirect("/"); // Redirect if not an admin or superadmin
+    }
+    const products = await Product.find();
+
+    return res.render("admin/products", {
+      layout: "adminLayout",
+      pageTitle: "Products Management",
+      products: products,
+    });
+  } catch (err) {
+    console.error("Error fetching products:", err);
+    res.status(500).send("Error fetching products from the database.");
+  }
+});
+
 // Route to handle product creation with image upload
 router.post(
   "/product-details",
@@ -83,6 +105,12 @@ router.post(
 );
 
 router.get("/admin/products/create", (req, res) => {
+  if (
+    req.session.userRole !== "Admin" &&
+    req.session.userRole !== "SuperAdmin"
+  ) {
+    return res.redirect("/"); // Redirect if not an admin or superadmin
+  }
   return res.render("admin/createForm", {
     layout: "adminLayout",
     pageTitle: "Create Product",
@@ -90,6 +118,12 @@ router.get("/admin/products/create", (req, res) => {
 });
 
 router.get("/admin/products/delete/:id", async (req, res) => {
+  if (
+    req.session.userRole !== "Admin" &&
+    req.session.userRole !== "SuperAdmin"
+  ) {
+    return res.redirect("/"); // Redirect if not an admin or superadmin
+  }
   try {
     const productId = req.params.id;
     await Product.findByIdAndDelete(productId);
@@ -101,6 +135,12 @@ router.get("/admin/products/delete/:id", async (req, res) => {
 });
 
 router.get("/admin/products/edit/:id", async (req, res) => {
+  if (
+    req.session.userRole !== "Admin" &&
+    req.session.userRole !== "SuperAdmin"
+  ) {
+    return res.redirect("/"); // Redirect if not an admin or superadmin
+  }
   try {
     const productId = req.params.id;
 
@@ -175,6 +215,12 @@ router.post(
 );
 
 router.get("/get-item-types", async (req, res) => {
+  if (
+    req.session.userRole !== "Admin" &&
+    req.session.userRole !== "SuperAdmin"
+  ) {
+    return res.redirect("/"); // Redirect if not an admin or superadmin
+  }
   const { type } = req.query; // Get category type from the query string
   console.log("type", type); // Log to check if type is received correctly
 
@@ -190,6 +236,12 @@ router.get("/get-item-types", async (req, res) => {
   }
 });
 router.get("/products/:productId", async (req, res) => {
+  if (
+    req.session.userRole !== "Admin" &&
+    req.session.userRole !== "SuperAdmin"
+  ) {
+    return res.redirect("/"); // Redirect if not an admin or superadmin
+  }
   try {
     const product = await Product.findById(req.params.productId);
 

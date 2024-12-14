@@ -7,6 +7,7 @@ const Category = require("../../model/category.model");
 router.post(
   "/admin/category",
   uploadCategoryImage.single("categoryImage"),
+
   async (req, res) => {
     try {
       const { categoryName, type, linkName } = req.body;
@@ -26,6 +27,12 @@ router.post(
 );
 
 router.get("/admin/category/create", (req, res) => {
+  if (
+    req.session.userRole !== "Admin" &&
+    req.session.userRole !== "SuperAdmin"
+  ) {
+    return res.redirect("/"); // Redirect if not an admin or superadmin
+  }
   return res.render("admin/categoryForm", {
     layout: "adminLayout",
     pageTitle: "Create Category",
@@ -33,6 +40,12 @@ router.get("/admin/category/create", (req, res) => {
 });
 
 router.get("/admin/category/details", async (req, res) => {
+  if (
+    req.session.userRole !== "Admin" &&
+    req.session.userRole !== "SuperAdmin"
+  ) {
+    return res.redirect("/"); // Redirect if not an admin or superadmin
+  }
   try {
     const newCategory = await Category.find();
 

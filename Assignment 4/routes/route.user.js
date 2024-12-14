@@ -14,6 +14,20 @@ const {
   setUserSession,
   deleteUserSession,
 } = require("../util/cookie.js");
+router.get("/user-signup", (req, res) => {
+  if (req.session.userEmail) {
+    return res.redirect("/"); // Redirect if not logged in
+  }
+  res.render("signup");
+});
+router.get("/user-login", (req, res) => {
+  console.log(req.session.userEmail);
+  if (req.session.userEmail) {
+    return res.redirect("/"); // Redirect if not logged in
+  }
+  res.render("login");
+});
+
 router.post("/user-signup", async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
@@ -45,7 +59,14 @@ router.post("/user-signup", async (req, res) => {
     await newUser.save();
 
     console.log("Session before setting:", req.session);
-    setUserSession(req, newUser);
+    req.session.userEmail = newUser.email;
+    req.session.userRole = newUser.role;
+
+    req.session.isLoggedIn = true;
+
+    if (req.session.userId) {
+      return res.redirect("/"); // Redirect to login if not logged in
+    }
 
     await sendVerificationEmail(newUser.email, verificationToken);
 
@@ -103,8 +124,10 @@ router.post("/user-login", async (req, res) => {
         .status(400)
         .json({ success: false, message: "Invalid credentials" });
     }
-
-    setUserSession(req, user);
+    console.log("Role", user.role);
+    req.session.userEmail = user.email;
+    req.session.userRole = user.role;
+    req.session.isLoggedIn = true;
 
     user.lastLogin = new Date();
     await user.save();

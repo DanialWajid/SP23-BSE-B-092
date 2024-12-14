@@ -2,12 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 var expressLayouts = require("express-ejs-layouts");
 const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 let server = express();
 server.use(express.urlencoded({ extended: true }));
 server.set("view engine", "ejs");
 server.use(expressLayouts);
 server.use(express.static("public"));
 server.use(express.json());
+server.use(cookieParser());
 
 let adminProductsRouter = require("./routes/admin/products.controller");
 let adminCategoryRouter = require("./routes/admin/category.routes");
@@ -32,12 +34,8 @@ server.use(sessionMiddleware);
 dotenv.config({ path: ".env.local" });
 server.use(express.urlencoded({ extended: true })); // For parsing form
 
-server.get("/login", (req, res) => {
-  res.render("login");
-});
-server.get("/logout", (req, res) => {
-  res.render("/signup");
-});
+server.use(mainPageRouter);
+server.use(userRouter);
 server.get("/checkout", (req, res) => {
   res.render("checkout");
 });
@@ -45,16 +43,10 @@ server.get("/verify-email", (req, res) => {
   res.render("verify-email");
 });
 
-server.get("/signup", (req, res) => {
-  res.render("signup");
-});
-
-server.use(userRouter);
 server.use(adminProductsRouter);
 server.use(adminCategoryRouter);
 server.use(adminProjectRouter);
 server.use(ProjectRouter);
-server.use(mainPageRouter);
 server.use(womenPageRouter);
 server.use(menPageRouter);
 server.use(kidsPageRouter);
@@ -62,20 +54,9 @@ server.use(babyPageRouter);
 server.use(clickandcollectPageRouter);
 server.use(homePageRouter);
 
-let createRouter = require("./routes/admin/create.controller");
-server.use(createRouter);
-
 mongoose
   .connect("mongodb://127.0.0.1:27017/project")
   .then(() => console.log("Connected! to mongoDB"));
-
-server.get("/test", isAuthenticated, authorizeRole(["User"]), (req, res) => {
-  console.log("Is user logged in:", req.session.loggedIn);
-  const loggedIn = req.session && req.session.userId ? true : false; // Check if user is logged in
-
-  // Render the page and pass the loggedIn variable
-  res.render("project");
-});
 
 server.get("/myportfolio", (req, res) => {
   res.render("project");

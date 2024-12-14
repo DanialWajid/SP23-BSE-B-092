@@ -1,15 +1,15 @@
 const session = require("express-session");
 
 const sessionMiddleware = session({
-  secret: "my_session_secret_key", // Secret for signing the session ID cookie
-  resave: false, // Don't save session if not modified
-  saveUninitialized: false, // Don't create a session until something is stored
+  secret: "my_session_secret_key",
+  resave: false,
+  saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === "production", // Only over HTTPS in production
-    maxAge: 7 * 3600000,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
   },
 });
-
 const setUserSession = (req, user) => {
   req.session.userId = user._id; // Store user ID in session
   req.session.userRole = user.role; // Optional: store user role

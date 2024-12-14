@@ -7,21 +7,16 @@ const {
 
 const sendVerificationEmail = async (email, verificationToken) => {
   const recipient = [{ email }];
-  try {
-    const response = await mailtrapClient.send({
-      from: sender,
-      to: recipient,
-      template_uuid: "af447202-3111-4c8f-9a47-07dd51db772e",
-      template_variables: {
-        name: verificationToken,
-      },
-    });
-    console.log("Email sent successfully");
-    return response; // Return response for further use or testing
-  } catch (error) {
-    console.error("Failed to send email:", error.message);
-    throw new Error("Failed to send email: " + error.message);
-  }
+  const response = await mailtrapClient.send({
+    from: sender,
+    to: recipient,
+    template_uuid: "af447202-3111-4c8f-9a47-07dd51db772e",
+    template_variables: {
+      name: verificationToken,
+    },
+  });
+  console.log("Email sent successfully");
+  return response; // Return response for further use or testing
 };
 
 const sendWelcomeEmail = async (email, name) => {

@@ -3,6 +3,9 @@ const router = express.Router();
 const Product = require("../model/product.model");
 
 router.get("/main", (req, res) => {
+  if (!req.session.userEmail) {
+    return res.redirect("/user-login"); // Redirect if not logged in
+  }
   const heroContent = {
     dynamicHeading: "We are Primark",
     dynamicParagraph: "At Primark, there's something for everyone",
