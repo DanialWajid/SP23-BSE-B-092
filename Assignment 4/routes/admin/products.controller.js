@@ -231,7 +231,10 @@ router.get("/products/:productId", async (req, res) => {
     const product = await Product.findById(req.params.productId);
 
     // Render the product detail page
-    res.render("partials/productDetails", { product });
+    res.render("partials/productDetails", {
+      userEmail: req.session.userEmail,
+      product,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).send("Error fetching product details: " + err.message);

@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const Category = require("../model/category.model");
-const Product = require("../model/product.model");
-router.get("/clickandcollect", async (req, res) => {
+
+router.get("/Click", async (req, res) => {
   try {
-    const categories = await Category.find({ type: "Click & Collect" });
+    const categories = await Category.find({ type: "Kids" });
 
     const heroContent = {
-      dynamicHeading: "Click & Collect's",
+      dynamicHeading: "Click & Collect",
     };
 
     const dynamicCards = categories.map((category) => ({
@@ -23,33 +23,29 @@ router.get("/clickandcollect", async (req, res) => {
     res.status(500).send("Error fetching categories: " + err.message);
   }
 });
-
-router.get("/:itemType", async (req, res) => {
+router.get("/category/Click/:itemType", async (req, res) => {
   try {
-    const { itemType } = req.params; // Get the itemType from the URL
+    const { itemType } = req.params;
 
     const heading = {
-      title: itemType.charAt(0).toUpperCase() + itemType.slice(1), // Capitalize first letter
+      title: itemType.charAt(0).toUpperCase() + itemType.slice(1),
       subtitle: `Our top picks for ${itemType}`,
     };
 
-    // Query the database for products with the given categoryType and itemType
     const products = await Product.find({
-      categoryType: "clickandcollect", // Hardcoded categoryType ("Women") as an example
-      itemType: itemType, // Dynamically use itemType from URL
+      categoryType: "clickandcollect",
+      itemType: itemType,
     });
 
-    // Create dynamicCards from the database results
     const dynamicCards = products.map((product) => ({
-      link: `/products/${product._id}`, // Link to the product details page
-      image: product.productImage, // Assuming 'productImage' is stored in the database
+      link: `/products/${product._id}`,
+      image: product.productImage,
       alt: product.name,
-      text: product.name.toUpperCase(), // Product name in uppercase
+      text: product.name.toUpperCase(),
       price: `£${product.price}`,
-      colors: `${product.colors.length} colours`, // Assuming 'colors' is an array of color options
+      colors: `${product.colors.length} colours`,
     }));
 
-    // Render the products page, passing the heading and dynamicCards to the view
     res.render("productsIndex", {
       heading,
       dynamicCards,

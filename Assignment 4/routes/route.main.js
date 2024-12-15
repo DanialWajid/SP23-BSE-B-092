@@ -25,7 +25,7 @@ router.get("/main", (req, res) => {
       text: "KIDS",
     },
     {
-      link: "/clickandcollect",
+      link: "/Click",
       image: "/images/Wk 46 - Click & Collect - Landing Tile 02_ copy.avif",
       alt: "Click & Collect",
       text: "CLICK & COLLECT",

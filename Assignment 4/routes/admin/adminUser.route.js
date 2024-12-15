@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { User } = require("../../model/user.model");
 const { Superauth } = require("../../middleware/verified");
+const Order = require("../../model/order.model");
 
 router.get("/admin/users", Superauth, async (req, res) => {
   try {
@@ -66,4 +67,21 @@ router.get("/users/delete/:id", Superauth, async (req, res) => {
   }
 });
 
+router.get("/admin/user/orders", async (req, res) => {
+  try {
+    // Fetch all orders from the database sorted by orderDate
+    const orders = await Order.find().sort({ orderDate: -1 });
+
+    // If no orders are found, send a message
+    if (orders.length === 0) {
+      return res.render("orders", { orders: [], message: "No orders found." });
+    }
+
+    // Render the orders page with the orders data
+    res.render("orders", { orders });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;

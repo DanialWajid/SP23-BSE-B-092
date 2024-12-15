@@ -62,6 +62,7 @@ router.post("/user-signup", async (req, res) => {
     console.log("Session before setting:", req.session);
     req.session.userEmail = newUser.email;
     req.session.userRole = newUser.role;
+    req.session.cart = req.session.cart || [];
 
     req.session.isLoggedIn = true;
 
@@ -78,7 +79,6 @@ router.post("/user-signup", async (req, res) => {
     res.status(500).send("An error occurred during sign-up.");
   }
 });
-
 router.post("/verify-code", async (req, res) => {
   const { code } = req.body;
   try {
@@ -87,6 +87,9 @@ router.post("/verify-code", async (req, res) => {
       verificationTokenExpire: { $gt: Date.now() },
     });
 
+    console.log("hello", user?.verificationToken); // Correctly log the user's verificationToken
+    console.log("code", code); // Log the provided code from the request
+
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -94,18 +97,25 @@ router.post("/verify-code", async (req, res) => {
       });
     }
 
+    // Save the user if needed (you might not need this if you're not modifying user here)
     await user.save();
 
-    if (user.email == "danialwajid112@gmail.com") {
-      await sendWelcomeEmail(user.email, verificationToken);
+    if (user.email === "danialwajid112@gmail.com") {
+      // Pass the user's verification token as the second argument to the email function
+      await sendWelcomeEmail(user.email, user.verificationToken);
     }
 
+    // Set the user verification status and clean up the token
     user.isVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpire = undefined;
-    res.status(200).redirect("/");
+
+    // Save the user again after modifying their verification status
+    await user.save();
+
+    res.status(200).redirect("/"); // Redirect after successful verification
   } catch (error) {
-    console.log("error in verifyEmail ", error.message);
+    console.log("error in verify-Email ", error.message);
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
@@ -131,6 +141,7 @@ router.post("/user-login", async (req, res) => {
     req.session.userEmail = user.email;
     req.session.userRole = user.role;
     req.session.isLoggedIn = true;
+    req.session.cart = req.session.cart || [];
 
     user.lastLogin = new Date();
     await user.save();
@@ -245,21 +256,5 @@ router.post("/user/reset-password/:token", async (req, res) => {
     });
   }
 });
-
-const checkAuth = async (req, res) => {
-  try {
-    const user = await User.findById(req.userId).select("-password");
-    if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User not found" });
-    }
-
-    res.status(200).json({ success: true, user });
-  } catch (error) {
-    console.log("Error in checkAuth ", error);
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
 
 module.exports = router;

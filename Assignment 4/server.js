@@ -24,18 +24,19 @@ let clickandcollectPageRouter = require("./routes/route.clickandcollect");
 let homePageRouter = require("./routes/route.home");
 let userRouter = require("./routes/route.user");
 let AdminUserRouter = require("./routes/admin/adminUser.route");
+let cartRouter = require("./routes/route.cart");
 
 const { sessionMiddleware, deleteUserSession } = require("./util/cookie");
 server.use(sessionMiddleware);
 
 dotenv.config({ path: ".env.local" });
 server.use(express.urlencoded({ extended: true })); // For parsing form
+server.use(kidsPageRouter);
 
+server.use(cartRouter);
 server.use(mainPageRouter);
+server.use(clickandcollectPageRouter);
 server.use(userRouter);
-server.get("/checkout", (req, res) => {
-  res.render("checkout");
-});
 server.get("/verify-email", (req, res) => {
   res.render("verify-email");
 });
@@ -47,9 +48,7 @@ server.use(adminProjectRouter);
 server.use(ProjectRouter);
 server.use(womenPageRouter);
 server.use(menPageRouter);
-server.use(kidsPageRouter);
 server.use(babyPageRouter);
-server.use(clickandcollectPageRouter);
 server.use(homePageRouter);
 
 mongoose
