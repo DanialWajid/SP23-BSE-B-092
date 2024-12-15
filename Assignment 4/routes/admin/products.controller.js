@@ -211,7 +211,7 @@ router.post(
   }
 );
 
-router.get("/get-item-types", authMiddleware, async (req, res) => {
+router.get("/get-item-types", async (req, res) => {
   const { type } = req.query; // Get category type from the query string
   console.log("type", type); // Log to check if type is received correctly
 
@@ -226,7 +226,7 @@ router.get("/get-item-types", authMiddleware, async (req, res) => {
     res.status(500).json({ error: "Error fetching item types" });
   }
 });
-router.get("/products/:productId", authMiddleware, async (req, res) => {
+router.get("/products/:productId", async (req, res) => {
   try {
     const product = await Product.findById(req.params.productId);
 
