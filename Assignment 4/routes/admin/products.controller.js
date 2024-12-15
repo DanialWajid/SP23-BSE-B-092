@@ -3,16 +3,12 @@ const router = express.Router();
 const Category = require("../../model/category.model");
 const Product = require("../../model/product.model");
 const { uploadProductImage } = require("../../middleware/multer.middleware");
+const { authMiddleware } = require("../../middleware/verified");
 
-router.get("/admin/product-details", async (req, res) => {
+router.get("/admin/product-details", authMiddleware, async (req, res) => {
   try {
     console.log("role:", req.session.userRole);
-    if (
-      req.session.userRole !== "Admin" &&
-      req.session.userRole !== "SuperAdmin"
-    ) {
-      return res.redirect("/"); // Redirect if not an admin or superadmin
-    }
+
     const products = await Product.find();
 
     return res.render("admin/products", {
@@ -29,6 +25,7 @@ router.get("/admin/product-details", async (req, res) => {
 // Route to handle product creation with image upload
 router.post(
   "/product-details",
+  authMiddleware,
   uploadProductImage.single("productImage"), // Middleware to handle single image upload
   async (req, res) => {
     try {
@@ -104,7 +101,7 @@ router.post(
   }
 );
 
-router.get("/admin/products/create", (req, res) => {
+router.get("/admin/products/create", authMiddleware, (req, res) => {
   if (
     req.session.userRole !== "Admin" &&
     req.session.userRole !== "SuperAdmin"
@@ -117,7 +114,7 @@ router.get("/admin/products/create", (req, res) => {
   });
 });
 
-router.get("/admin/products/delete/:id", async (req, res) => {
+router.get("/admin/products/delete/:id", authMiddleware, async (req, res) => {
   if (
     req.session.userRole !== "Admin" &&
     req.session.userRole !== "SuperAdmin"
@@ -134,7 +131,7 @@ router.get("/admin/products/delete/:id", async (req, res) => {
   }
 });
 
-router.get("/admin/products/edit/:id", async (req, res) => {
+router.get("/admin/products/edit/:id", authMiddleware, async (req, res) => {
   if (
     req.session.userRole !== "Admin" &&
     req.session.userRole !== "SuperAdmin"
@@ -214,13 +211,7 @@ router.post(
   }
 );
 
-router.get("/get-item-types", async (req, res) => {
-  if (
-    req.session.userRole !== "Admin" &&
-    req.session.userRole !== "SuperAdmin"
-  ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
-  }
+router.get("/get-item-types", authMiddleware, async (req, res) => {
   const { type } = req.query; // Get category type from the query string
   console.log("type", type); // Log to check if type is received correctly
 
@@ -235,13 +226,7 @@ router.get("/get-item-types", async (req, res) => {
     res.status(500).json({ error: "Error fetching item types" });
   }
 });
-router.get("/products/:productId", async (req, res) => {
-  if (
-    req.session.userRole !== "Admin" &&
-    req.session.userRole !== "SuperAdmin"
-  ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
-  }
+router.get("/products/:productId", authMiddleware, async (req, res) => {
   try {
     const product = await Product.findById(req.params.productId);
 

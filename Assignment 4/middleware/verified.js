@@ -1,5 +1,4 @@
 const authMiddleware = (req, res, next) => {
-  // Check if the user is already logged in and has the required role
   if (
     req.session.userRole === "Admin" ||
     req.session.userRole === "SuperAdmin"
@@ -10,5 +9,21 @@ const authMiddleware = (req, res, next) => {
   // If not authenticated, redirect to the login page
   return res.redirect("/");
 };
+const Superauth = (req, res, next) => {
+  if (req.session.userRole === "SuperAdmin") {
+    return next();
+  }
 
-module.exports = { authMiddleware };
+  res.send(`
+    <html>
+      <body>
+        <script>
+          alert("You are unauthorized to access this page.");
+          window.location.href = "/";
+        </script>
+      </body>
+    </html>
+  `);
+};
+
+module.exports = { Superauth, authMiddleware };

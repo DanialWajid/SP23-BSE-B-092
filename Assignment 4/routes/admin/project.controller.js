@@ -3,12 +3,10 @@ const express = require("express");
 const router = express.Router();
 
 const project = require("../../model/project.model");
+const { authMiddleware } = require("../../middleware/verified");
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   console.log(req.session.userEmail);
-  if (!req.session.userEmail) {
-    return res.redirect("/user-login"); // Redirect if not logged in
-  }
   res.render("project");
 });
 
@@ -23,7 +21,7 @@ router.post("/project/projectDetails", async (req, res) => {
   }
 });
 
-router.get("/admin/create-project", (req, res) => {
+router.get("/admin/create-project", authMiddleware, (req, res) => {
   return res.render("project/projectCreate", {
     layout: "adminLayout",
     pageTitle: "Create Project",

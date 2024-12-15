@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const categoryController = require("../admin/category.controller");
 const { uploadCategoryImage } = require("../../middleware/multer.middleware");
+const { authMiddleware } = require("../../middleware/verified");
 
 const Category = require("../../model/category.model");
 router.post(
   "/admin/category",
+  authMiddleware,
   uploadCategoryImage.single("categoryImage"),
 
   async (req, res) => {
@@ -26,26 +28,14 @@ router.post(
   }
 );
 
-router.get("/admin/category/create", (req, res) => {
-  if (
-    req.session.userRole !== "Admin" &&
-    req.session.userRole !== "SuperAdmin"
-  ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
-  }
+router.get("/admin/category/create", authMiddleware, (req, res) => {
   return res.render("admin/categoryForm", {
     layout: "adminLayout",
     pageTitle: "Create Category",
   });
 });
 
-router.get("/admin/category/details", async (req, res) => {
-  if (
-    req.session.userRole !== "Admin" &&
-    req.session.userRole !== "SuperAdmin"
-  ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
-  }
+router.get("/admin/category/details", authMiddleware, async (req, res) => {
   try {
     const newCategory = await Category.find();
 
@@ -59,9 +49,17 @@ router.get("/admin/category/details", async (req, res) => {
     res.status(500).send("Error fetching products from the database.");
   }
 });
-router.get("/admin/category/delete/:id", categoryController.delCategory);
+router.get(
+  "/admin/category/delete/:id",
+  authMiddleware,
+  categoryController.delCategory
+);
 
-router.get("/admin/category/edit/:id", categoryController.editCategory);
+router.get(
+  "/admin/category/edit/:id",
+  authMiddleware,
+  categoryController.editCategory
+);
 
 router.post(
   "/admin/category/:id",
@@ -76,20 +74,18 @@ router.post(
       let categoryImage;
 
       if (req.file) {
-        // If a new image was uploaded
         categoryImage = req.file.path;
       } else {
-        // If no new image was uploaded, keep the existing image
         const category = await Category.findById(categoryId);
         if (!category) {
           return res.status(404).send("Category not found");
         }
-        categoryImage = category.categoryImage; // Retain the current image
+        categoryImage = category.categoryImage;
       }
 
       const updatedCategory = await Category.findByIdAndUpdate(
         categoryId,
-        { categoryName, categoryImage, type, linkName }, // Updated fields
+        { categoryName, categoryImage, type, linkName },
         { new: true }
       );
 

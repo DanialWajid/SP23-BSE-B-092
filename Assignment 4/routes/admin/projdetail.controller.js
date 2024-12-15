@@ -1,12 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Project = require("../../model/project.model");
+const { authMiddleware } = require("../../middleware/verified");
 
-router.get("/", async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   // If the user is not logged in, redirect to the login page
-  if (!req.session.userEmail) {
-    return res.redirect("/user-login");
-  }
 
   try {
     const projects = await Project.find();

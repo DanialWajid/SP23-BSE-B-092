@@ -23,12 +23,9 @@ let babyPageRouter = require("./routes/route.baby");
 let clickandcollectPageRouter = require("./routes/route.clickandcollect");
 let homePageRouter = require("./routes/route.home");
 let userRouter = require("./routes/route.user");
-const { isAuthenticated, authorizeRole } = require("./middleware/auth");
-const {
-  sessionMiddleware,
-  setUserSession,
-  deleteUserSession,
-} = require("./util/cookie");
+let AdminUserRouter = require("./routes/admin/adminUser.route");
+
+const { sessionMiddleware, deleteUserSession } = require("./util/cookie");
 server.use(sessionMiddleware);
 
 dotenv.config({ path: ".env.local" });
@@ -43,6 +40,7 @@ server.get("/verify-email", (req, res) => {
   res.render("verify-email");
 });
 
+server.use(AdminUserRouter);
 server.use(adminProductsRouter);
 server.use(adminCategoryRouter);
 server.use(adminProjectRouter);

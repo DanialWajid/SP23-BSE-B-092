@@ -1,11 +1,5 @@
 const Category = require("../../model/category.model");
 exports.editCategory = async (req, res) => {
-  if (
-    req.session.userRole !== "Admin" &&
-    req.session.userRole !== "SuperAdmin"
-  ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
-  }
   try {
     const categoryId = req.params.id;
 
@@ -27,12 +21,6 @@ exports.editCategory = async (req, res) => {
 };
 
 exports.delCategory = async (req, res) => {
-  if (
-    req.session.userRole !== "Admin" &&
-    req.session.userRole !== "SuperAdmin"
-  ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
-  }
   try {
     const categoryId = req.params.id;
     const category = await Category.findById(categoryId);

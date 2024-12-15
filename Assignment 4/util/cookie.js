@@ -7,14 +7,9 @@ const sessionMiddleware = session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 1 week
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   },
 });
-const setUserSession = (req, user) => {
-  req.session.userId = user._id; // Store user ID in session
-  req.session.userRole = user.role; // Optional: store user role
-  req.session.isLoggedIn = true; // Optional: mark user as logged in
-};
 
 const deleteUserSession = (req) => {
   req.session.destroy((err) => {
@@ -24,4 +19,4 @@ const deleteUserSession = (req) => {
   });
 };
 
-module.exports = { sessionMiddleware, setUserSession, deleteUserSession };
+module.exports = { sessionMiddleware, deleteUserSession };

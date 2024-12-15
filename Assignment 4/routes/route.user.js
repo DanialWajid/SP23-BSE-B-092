@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const bcryptjs = require("bcryptjs");
+const crypto = require("crypto");
 const { User } = require("../model/user.model"); // Import your User model
 const {
   sendVerificationEmail,
@@ -67,8 +68,9 @@ router.post("/user-signup", async (req, res) => {
     if (req.session.userId) {
       return res.redirect("/"); // Redirect to login if not logged in
     }
-
-    await sendVerificationEmail(newUser.email, verificationToken);
+    if (newUser.email == "danialwajid112@gmail.com") {
+      await sendVerificationEmail(newUser.email, verificationToken);
+    }
 
     res.status(200).redirect("/verify-email");
   } catch (error) {
@@ -97,7 +99,9 @@ router.post("/verify-code", async (req, res) => {
     user.verificationTokenExpire = undefined;
     await user.save();
 
-    await sendWelcomeEmail(user.email, user.name);
+    if (newUser.email == "danialwajid112@gmail.com") {
+      await sendWelcomeEmail(newUser.email, verificationToken);
+    }
 
     res.status(200).redirect("/");
   } catch (error) {
@@ -109,7 +113,6 @@ router.post("/verify-code", async (req, res) => {
 router.post("/user-login", async (req, res) => {
   const { email, password } = req.body;
   try {
-    // Find user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res
@@ -140,12 +143,19 @@ router.post("/user-login", async (req, res) => {
 });
 router.get("/user-logout", async (req, res) => {
   req.session.destroy((err) => {
-    res.clearCookie("connect.sid"); // Clearing the session cookie
-    res.status(200).redirect("/");
+    res.clearCookie("connect.sid");
+    res.status(200).redirect("/user-login");
   });
 });
 
-const forgotPassword = async (req, res) => {
+router.get("/admin/user-forgot-password", async (req, res) => {
+  res.render("forgot-password");
+});
+router.get("/admin/reset-sent", (req, res) => {
+  res.render("reset-sent"); // This will render the "reset-sent" EJS file (or any other template engine you are using)
+});
+
+router.post("/admin/user-forgot-password", async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -157,7 +167,7 @@ const forgotPassword = async (req, res) => {
     }
 
     const resetToken = crypto.randomBytes(20).toString("hex");
-    const resetTokenExpiresAt = new Date(Date.now() + 36000000); // Adds 1 hour
+    const resetTokenExpiresAt = new Date(Date.now() + 36000000);
 
     user.resetPasswordToken = resetToken;
     user.resetPasswordExpire = resetTokenExpiresAt;
@@ -167,25 +177,43 @@ const forgotPassword = async (req, res) => {
     // send email
     await sendResetPasswordEmail(
       user.email,
-      `${process.env.CLIENT_URL}/reset-password/${resetToken}`
+      `http://localhost:5001/user/reset-password/${resetToken}`
     );
 
-    res.status(200).json({
-      success: true,
-      message: "Password reset link sent to your email",
-    });
+    res.status(200).redirect("/admin/reset-sent");
   } catch (error) {
     console.log("Error in forgotPassword ", error);
     res.status(400).json({ success: false, message: error.message });
   }
-};
-const resetPassword = async (req, res) => {
+});
+router.get("/user/reset-password/:token", async (req, res) => {
+  const resetToken = req.params.token;
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: resetToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).render("invalid-token");
+    }
+
+    res.render("reset-password", { token: resetToken });
+  } catch (error) {
+    console.log("Error fetching user for reset password:", error);
+    res.status(500).send("Internal server error");
+  }
+});
+
+router.post("/user/reset-password/:token", async (req, res) => {
   try {
     const { token } = req.params; // Extract token from request parameters
     const { password } = req.body;
 
     // Log the token received from the frontend
     console.log("Token received from frontend:", token);
+    console.log("Password received from frontend:", password);
 
     const user = await User.findOne({
       resetPasswordToken: token,
@@ -199,7 +227,7 @@ const resetPassword = async (req, res) => {
     }
 
     // Proceed with resetting the password
-    const hashedPassword = await bcryptjs.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     user.password = hashedPassword;
     user.resetPasswordToken = undefined;
@@ -208,9 +236,7 @@ const resetPassword = async (req, res) => {
 
     await sendResetSuccessEmail(user.email);
 
-    res
-      .status(200)
-      .json({ success: true, message: "Password reset successful" });
+    res.redirect("/user-login");
   } catch (error) {
     console.log("Error in resetPassword:", error);
     res.status(400).json({
@@ -218,7 +244,7 @@ const resetPassword = async (req, res) => {
       message: error.message || "Error resetting password",
     });
   }
-};
+});
 
 const checkAuth = async (req, res) => {
   try {
