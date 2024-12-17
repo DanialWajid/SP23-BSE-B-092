@@ -3,21 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Category Page</title>
+    <title>Stylish Clothing Website</title>
     <link
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body {
-        background-color: #f8f9fa;
+        background: linear-gradient(to right, #f0f4f8, #d9dee2);
         color: #333;
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
       }
 
       .container {
         max-width: 1200px;
         margin: 50px auto;
+        padding: 20px;
       }
 
       /* Heading Section */
@@ -26,56 +31,104 @@
       }
 
       .position-relative.text-white.text-center.w-100 {
-        background-color: black;
-        padding: 20px;
+        background-color: #333;
+        padding: 40px;
         z-index: 1;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
 
       .position-relative.text-white.text-center.w-100 p {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
         font-weight: 300;
         margin-bottom: 0.5rem;
       }
 
       .position-relative.text-white.text-center.w-100 h1 {
-        font-size: 3rem;
+        font-size: 3.5rem;
         font-weight: bold;
         margin-bottom: 1.5rem;
       }
 
-      .btn-primary {
-        background-color: #007bff;
-        border: none;
+      /* Search Bar Section */
+      .search-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .search-bar input {
+        width: 70%;
+        padding: 15px;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-bar select {
+        width: 25%;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
 
       /* Cards Section */
       #card-container {
         display: flex;
-        gap: 1rem;
-        flex-wrap: wrap; /* Allow wrapping */
-        padding-bottom: 20px; /* Add space for pagination */
+        gap: 0.5rem;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 20px;
         padding-left: 15px;
         padding-right: 15px;
       }
 
       .card {
-        flex: 0 0 21%; /* Set to show 4 cards per row (100% / 4 = 25%) */
-        width: 21%; /* Make sure cards take up equal width */
-        min-width: 280px; /* Ensure each card has a minimum width */
-        max-width: 320px; /* Maximum width for the card */
+        flex: 0 0 21%;
+        min-width: 280px;
+        max-width: 320px;
+        margin-right: 1rem;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+
+      .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       }
 
       .card-img-top {
         max-height: 350px;
         object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+
+      .card:hover .card-img-top {
+        transform: scale(1.1);
       }
 
       .card-body p {
         margin-bottom: 10px;
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
 
-      /* Pagination Section */
+      .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 30px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background-color: #0056b3;
+      }
+
       .pagination {
         justify-content: center;
       }
@@ -98,18 +151,28 @@
   </head>
   <body>
     <div class="container">
-      <!-- Heading Section -->
       <div class="position-relative text-center my-5">
-        <div
-          class="position-relative text-white text-center w-100"
-          style="background-color: black; padding: 20px; z-index: 1"
-        >
-          <p class="text-uppercase fw-light mb-2"><%= heading.subtitle %></p>
-          <h1 class="display-4 fw-bold mb-3"><%= heading.title %></h1>
+        <div class="position-relative text-white text-center w-100">
+          <p class="text-uppercase fw-light mb-2">Shop Now</p>
+          <h1 class="display-4 fw-bold mb-3">
+            Explore Our Latest <%= heading.title %> Collection
+          </h1>
         </div>
       </div>
 
-      <!-- Cards Section -->
+      <div class="search-bar">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search categories..."
+        />
+        <select id="sortSelect">
+          <option value="default">Sort by</option>
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
+        </select>
+      </div>
+
       <div id="card-container" class="row justify-content-center">
         <% dynamicCards.forEach(function(card, index) { %>
         <div class="col-12 col-md-4 mb-4" data-index="<%= index %>">
@@ -131,7 +194,6 @@
         <% }); %>
       </div>
 
-      <!-- Pagination Section -->
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <% if (currentPage > 1) { %>
@@ -153,7 +215,54 @@
       </nav>
     </div>
 
-    <!-- Add Font Awesome for Arrows -->
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script>
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          const searchQuery = this.value.toLowerCase();
+          const cards = document.querySelectorAll("#card-container .col-md-4");
+          cards.forEach((card) => {
+            const cardText = card
+              .querySelector(".card-body p")
+              .innerText.toLowerCase();
+            if (cardText.includes(searchQuery)) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+
+      document
+        .getElementById("sortSelect")
+        .addEventListener("change", function () {
+          const sortValue = this.value;
+          const cards = [
+            ...document.querySelectorAll("#card-container .col-md-4"),
+          ];
+          const container = document.getElementById("card-container");
+
+          cards.sort((a, b) => {
+            const priceA = parseFloat(
+              a
+                .querySelector(".card-body .text-muted")
+                .innerText.replace("Price: £", "")
+            );
+            const priceB = parseFloat(
+              b
+                .querySelector(".card-body .text-muted")
+                .innerText.replace("Price: £", "")
+            );
+            return sortValue === "asc" ? priceA - priceB : priceB - priceA;
+          });
+
+          container.innerHTML = "";
+          cards.forEach((card) => {
+            container.appendChild(card);
+          });
+        });
+    </script>
   </body>
 </html>

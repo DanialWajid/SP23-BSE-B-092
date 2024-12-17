@@ -6,13 +6,12 @@ const Product = require("../model/product.model");
 router.get("/baby", async (req, res) => {
   try {
     const categories = await Category.find({ type: "Baby" });
-
     const heroContent = {
       dynamicHeading: "Baby's",
     };
 
     const dynamicCards = categories.map((category) => ({
-      link: category.linkName,
+      link: `/category/baby/${category.linkName}`,
       image: category.categoryImage,
       alt: category.categoryName,
       text: category.categoryName.toUpperCase(),
@@ -24,35 +23,55 @@ router.get("/baby", async (req, res) => {
     res.status(500).send("Error fetching categories: " + err.message);
   }
 });
-router.get("/:itemType", async (req, res) => {
+router.get("/category/baby/:itemType", async (req, res) => {
   try {
-    const { itemType } = req.params; // Get the itemType from the URL
+    const { itemType } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const itemsPerPage = 3;
+    const sortOption = req.query.sort || "";
 
     const heading = {
-      title: itemType.charAt(0).toUpperCase() + itemType.slice(1), // Capitalize first letter
+      title: itemType.charAt(0).toUpperCase() + itemType.slice(1),
       subtitle: `Our top picks for ${itemType}`,
     };
 
-    // Query the database for products with the given categoryType and itemType
-    const products = await Product.find({
-      categoryType: "Baby", // Hardcoded categoryType ("Women") as an example
-      itemType: itemType, // Dynamically use itemType from URL
+    const totalProducts = await Product.countDocuments({
+      categoryType: "Baby",
+      itemType: itemType,
     });
 
-    // Create dynamicCards from the database results
+    const totalPages = Math.ceil(totalProducts / itemsPerPage);
+
+    let sortCriteria = {};
+    if (sortOption === "priceAsc") {
+      sortCriteria = { price: 1 };
+    } else if (sortOption === "priceDesc") {
+      sortCriteria = { price: -1 };
+    }
+
+    const products = await Product.find({
+      categoryType: "Baby",
+      itemType: itemType,
+    })
+      .sort(sortCriteria)
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage);
+
     const dynamicCards = products.map((product) => ({
-      link: `/products/${product._id}`, // Link to the product details page
-      image: product.productImage, // Assuming 'productImage' is stored in the database
+      link: `/products/${product._id}`,
+      image: product.productImage,
       alt: product.name,
-      text: product.name.toUpperCase(), // Product name in uppercase
+      text: product.name.toUpperCase(),
       price: `£${product.price}`,
-      colors: `${product.colors.length} colours`, // Assuming 'colors' is an array of color options
+      colors: `${product.colors.length} colours`,
     }));
 
-    // Render the products page, passing the heading and dynamicCards to the view
     res.render("productsIndex", {
       heading,
       dynamicCards,
+      currentPage: page,
+      totalPages,
+      sort: sortOption,
     });
   } catch (err) {
     console.error(err);

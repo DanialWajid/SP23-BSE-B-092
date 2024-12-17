@@ -25,16 +25,36 @@ router.get("/men", async (req, res) => {
 router.get("/category/men/:itemType", async (req, res) => {
   try {
     const { itemType } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const itemsPerPage = 3;
+    const sortOption = req.query.sort || "";
 
     const heading = {
       title: itemType.charAt(0).toUpperCase() + itemType.slice(1),
       subtitle: `Our top picks for ${itemType}`,
     };
 
-    const products = await Product.find({
+    const totalProducts = await Product.countDocuments({
       categoryType: "Men",
       itemType: itemType,
     });
+
+    const totalPages = Math.ceil(totalProducts / itemsPerPage);
+
+    let sortCriteria = {};
+    if (sortOption === "priceAsc") {
+      sortCriteria = { price: 1 };
+    } else if (sortOption === "priceDesc") {
+      sortCriteria = { price: -1 };
+    }
+
+    const products = await Product.find({
+      categoryType: "Men",
+      itemType: itemType,
+    })
+      .sort(sortCriteria)
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage);
 
     const dynamicCards = products.map((product) => ({
       link: `/products/${product._id}`,
@@ -48,6 +68,9 @@ router.get("/category/men/:itemType", async (req, res) => {
     res.render("productsIndex", {
       heading,
       dynamicCards,
+      currentPage: page,
+      totalPages,
+      sort: sortOption,
     });
   } catch (err) {
     console.error(err);

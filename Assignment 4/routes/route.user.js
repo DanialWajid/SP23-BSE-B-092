@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const bcryptjs = require("bcryptjs");
 const crypto = require("crypto");
-const { User } = require("../model/user.model"); // Import your User model
+const { User } = require("../model/user.model");
 const {
   sendVerificationEmail,
   sendWelcomeEmail,
@@ -17,14 +17,14 @@ const {
 } = require("../util/cookie.js");
 router.get("/user-signup", (req, res) => {
   if (req.session.userEmail) {
-    return res.redirect("/"); // Redirect if not logged in
+    return res.redirect("/");
   }
   res.render("signup");
 });
 router.get("/user-login", (req, res) => {
   console.log(req.session.userEmail);
   if (req.session.userEmail) {
-    return res.redirect("/"); // Redirect if not logged in
+    return res.redirect("/");
   }
   res.render("login");
 });
@@ -67,7 +67,7 @@ router.post("/user-signup", async (req, res) => {
     req.session.isLoggedIn = true;
 
     if (req.session.userId) {
-      return res.redirect("/"); // Redirect to login if not logged in
+      return res.redirect("/");
     }
     if (newUser.email == "danialwajid112@gmail.com") {
       await sendVerificationEmail(newUser.email, verificationToken);
@@ -87,8 +87,8 @@ router.post("/verify-code", async (req, res) => {
       verificationTokenExpire: { $gt: Date.now() },
     });
 
-    console.log("hello", user?.verificationToken); // Correctly log the user's verificationToken
-    console.log("code", code); // Log the provided code from the request
+    console.log("hello", user?.verificationToken);
+    console.log("code", code);
 
     if (!user) {
       return res.status(400).json({
@@ -97,23 +97,19 @@ router.post("/verify-code", async (req, res) => {
       });
     }
 
-    // Save the user if needed (you might not need this if you're not modifying user here)
     await user.save();
 
     if (user.email === "danialwajid112@gmail.com") {
-      // Pass the user's verification token as the second argument to the email function
       await sendWelcomeEmail(user.email, user.verificationToken);
     }
 
-    // Set the user verification status and clean up the token
     user.isVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpire = undefined;
 
-    // Save the user again after modifying their verification status
     await user.save();
 
-    res.status(200).redirect("/"); // Redirect after successful verification
+    res.status(200).redirect("/");
   } catch (error) {
     console.log("error in verify-Email ", error.message);
     res.status(500).json({ success: false, message: "Server error" });
@@ -130,7 +126,6 @@ router.post("/user-login", async (req, res) => {
         .json({ success: false, message: "Invalid credentials" });
     }
 
-    // Compare password using bcryptjs
     const isPasswordValid = await bcryptjs.compare(password, user.password);
     if (!isPasswordValid) {
       return res
@@ -163,7 +158,7 @@ router.get("/admin/user-forgot-password", async (req, res) => {
   res.render("forgot-password");
 });
 router.get("/admin/reset-sent", (req, res) => {
-  res.render("reset-sent"); // This will render the "reset-sent" EJS file (or any other template engine you are using)
+  res.render("reset-sent");
 });
 
 router.post("/admin/user-forgot-password", async (req, res) => {
@@ -185,7 +180,6 @@ router.post("/admin/user-forgot-password", async (req, res) => {
 
     await user.save();
 
-    // send email
     await sendResetPasswordEmail(
       user.email,
       `http://localhost:5001/user/reset-password/${resetToken}`
@@ -219,10 +213,9 @@ router.get("/user/reset-password/:token", async (req, res) => {
 
 router.post("/user/reset-password/:token", async (req, res) => {
   try {
-    const { token } = req.params; // Extract token from request parameters
+    const { token } = req.params;
     const { password } = req.body;
 
-    // Log the token received from the frontend
     console.log("Token received from frontend:", token);
     console.log("Password received from frontend:", password);
 
@@ -237,7 +230,6 @@ router.post("/user/reset-password/:token", async (req, res) => {
         .json({ success: false, message: "Invalid or expired reset token" });
     }
 
-    // Proceed with resetting the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     user.password = hashedPassword;

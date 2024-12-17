@@ -22,30 +22,21 @@ router.get("/admin/product-details", authMiddleware, async (req, res) => {
   }
 });
 
-// Route to handle product creation with image upload
 router.post(
   "/product-details",
   authMiddleware,
-  uploadProductImage.single("productImage"), // Middleware to handle single image upload
+  uploadProductImage.single("productImage"),
   async (req, res) => {
     try {
-      // Log incoming request for debugging
       console.log("Request Body:", req.body);
       console.log(
         "Uploaded file path:",
         req.file ? req.file.path : "No file uploaded"
       );
 
-      const {
-        name,
-        price,
-        sizesAvailable, // This will already be an array
-        categoryType,
-        itemType,
-        colors, // This will also be an array
-      } = req.body;
+      const { name, price, sizesAvailable, categoryType, itemType, colors } =
+        req.body;
 
-      // Ensure sizesAvailable and colors are arrays (if not selected, they will be empty arrays)
       const sizesArray = Array.isArray(sizesAvailable)
         ? sizesAvailable
         : sizesAvailable
@@ -57,15 +48,12 @@ router.post(
         ? [colors]
         : [];
 
-      // Get the uploaded product image file
       const productImage = req.file ? req.file.path : null;
 
-      // Check if an image was uploaded
       if (!productImage) {
         return res.status(400).json({ error: "Product image is required" });
       }
 
-      // Log the final data being saved
       console.log("Product Data:", {
         name,
         price,
@@ -76,25 +64,21 @@ router.post(
         productImage,
       });
 
-      // Create a new product instance using the form data
       const product = new Product({
         name,
         price,
-        sizesAvailable: sizesArray, // Store the sizes array directly
+        sizesAvailable: sizesArray,
         categoryType,
         itemType,
-        colors: colorsArray, // Store the colors array directly
-        productImage, // Store the uploaded image path
+        colors: colorsArray,
+        productImage,
       });
 
-      // Save the product to the database
       await product.save();
 
-      // Log success and redirect
       console.log("Product successfully created:", product);
       res.redirect("/admin/product-details");
     } catch (error) {
-      // Log error and send response
       console.error("Error creating product:", error);
       res.status(500).json({ error: "Error creating product" });
     }
@@ -106,7 +90,7 @@ router.get("/admin/products/create", authMiddleware, (req, res) => {
     req.session.userRole !== "Admin" &&
     req.session.userRole !== "SuperAdmin"
   ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
+    return res.redirect("/");
   }
   return res.render("admin/createForm", {
     layout: "adminLayout",
@@ -119,7 +103,7 @@ router.get("/admin/products/delete/:id", authMiddleware, async (req, res) => {
     req.session.userRole !== "Admin" &&
     req.session.userRole !== "SuperAdmin"
   ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
+    return res.redirect("/");
   }
   try {
     const productId = req.params.id;
@@ -136,7 +120,7 @@ router.get("/admin/products/edit/:id", authMiddleware, async (req, res) => {
     req.session.userRole !== "Admin" &&
     req.session.userRole !== "SuperAdmin"
   ) {
-    return res.redirect("/"); // Redirect if not an admin or superadmin
+    return res.redirect("/");
   }
   try {
     const productId = req.params.id;
@@ -170,39 +154,34 @@ router.post(
 
       let productImage;
 
-      // Check if a new image is uploaded
       if (req.file) {
-        // If a new image was uploaded
         productImage = req.file.path;
       } else {
-        // If no new image was uploaded, keep the existing image
-        const product = await Product.findById(productId); // Fetch the existing product
+        const product = await Product.findById(productId);
         if (!product) {
           return res.status(404).send("Product not found");
         }
-        productImage = product.productImage; // Retain the current image
+        productImage = product.productImage;
       }
 
-      // Update the product details
       const updatedProduct = await Product.findByIdAndUpdate(
-        productId, // Find product by ID
+        productId,
         {
           name,
           price,
-          sizesAvailable, // assuming it's an array
+          sizesAvailable,
           categoryType,
           itemType,
-          colors, // assuming it's an array
-          productImage, // updated image path
+          colors,
+          productImage,
         },
-        { new: true } // Return the updated product
+        { new: true }
       );
 
       if (!updatedProduct) {
         return res.status(404).send("Product not found");
       }
 
-      // Redirect to the product details page
       res.redirect("/admin/product-details");
     } catch (err) {
       console.error(err);
@@ -212,8 +191,8 @@ router.post(
 );
 
 router.get("/get-item-types", async (req, res) => {
-  const { type } = req.query; // Get category type from the query string
-  console.log("type", type); // Log to check if type is received correctly
+  const { type } = req.query;
+  console.log("type", type);
 
   try {
     const categories = await Category.find({ type });
@@ -230,7 +209,6 @@ router.get("/products/:productId", async (req, res) => {
   try {
     const product = await Product.findById(req.params.productId);
 
-    // Render the product detail page
     res.render("partials/productDetails", {
       userEmail: req.session.userEmail,
       product,

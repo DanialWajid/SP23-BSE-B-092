@@ -11,11 +11,11 @@ server.use(express.static("public"));
 server.use(express.json());
 server.use(cookieParser());
 
+let mainPageRouter = require("./routes/route.main");
 let adminProductsRouter = require("./routes/admin/products.controller");
 let adminCategoryRouter = require("./routes/admin/category.routes");
 let ProjectRouter = require("./routes/admin/project.controller");
 let adminProjectRouter = require("./routes/admin/projdetail.controller");
-let mainPageRouter = require("./routes/route.main");
 let womenPageRouter = require("./routes/route.women");
 let menPageRouter = require("./routes/route.men");
 let kidsPageRouter = require("./routes/route.kids");
@@ -30,7 +30,7 @@ const { sessionMiddleware, deleteUserSession } = require("./util/cookie");
 server.use(sessionMiddleware);
 
 dotenv.config({ path: ".env.local" });
-server.use(express.urlencoded({ extended: true })); // For parsing form
+server.use(express.urlencoded({ extended: true }));
 server.use(kidsPageRouter);
 
 server.use(cartRouter);

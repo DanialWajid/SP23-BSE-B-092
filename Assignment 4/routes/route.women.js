@@ -27,31 +27,36 @@ router.get("/women", async (req, res) => {
 router.get("/category/Women/:itemType", async (req, res) => {
   try {
     const { itemType } = req.params;
-    const page = parseInt(req.query.page) || 1; // Get the current page from the query parameter, default to 1 if not provided
-    const itemsPerPage = 3; // Number of products per page
+    const page = parseInt(req.query.page) || 1;
+    const itemsPerPage = 3;
+    const sortOption = req.query.sort || "";
 
     const heading = {
       title: itemType.charAt(0).toUpperCase() + itemType.slice(1),
       subtitle: `Our top picks for ${itemType}`,
     };
 
-    // Get the total number of products in the "Women" category for the given itemType
     const totalProducts = await Product.countDocuments({
       categoryType: "Women",
       itemType: itemType,
     });
 
-    // Calculate the total number of pages
     const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
-    // Get the products for the current page
+    let sortCriteria = {};
+    if (sortOption === "priceAsc") {
+      sortCriteria = { price: 1 };
+    } else if (sortOption === "priceDesc") {
+      sortCriteria = { price: -1 };
+    }
+
     const products = await Product.find({
       categoryType: "Women",
       itemType: itemType,
     })
-      .skip((page - 1) * itemsPerPage) // Skip the products from previous pages
-      .limit(itemsPerPage); // Limit the number of products to the itemsPerPage
-
+      .sort(sortCriteria)
+      .skip((page - 1) * itemsPerPage)
+      .limit(itemsPerPage);
     const dynamicCards = products.map((product) => ({
       link: `/products/${product._id}`,
       image: product.productImage,
@@ -66,6 +71,7 @@ router.get("/category/Women/:itemType", async (req, res) => {
       dynamicCards,
       currentPage: page,
       totalPages,
+      sort: sortOption,
     });
   } catch (err) {
     console.error(err);

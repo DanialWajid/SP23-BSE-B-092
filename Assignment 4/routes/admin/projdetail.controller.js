@@ -5,7 +5,7 @@ const { authMiddleware } = require("../../middleware/verified");
 
 router.get("/", async (req, res) => {
   if (!req.session.userEmail) {
-    return res.redirect("/user-login"); // Redirect if not logged in
+    return res.redirect("/user-login");
   }
   try {
     const projects = await Project.find();
@@ -13,7 +13,7 @@ router.get("/", async (req, res) => {
     return res.render("project", {
       layout: "Layout",
       projects: projects,
-      isLoggedIn: isLoggedIn, // Pass the isLoggedIn variable to the view
+      isLoggedIn: isLoggedIn,
     });
   } catch (err) {
     console.error("Error fetching projects:", err);

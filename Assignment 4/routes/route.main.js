@@ -1,10 +1,20 @@
+const Product = require("../model/product.model");
 const express = require("express");
 const router = express.Router();
-const Product = require("../model/product.model");
+
+router.get("/category/:categoryName", (req, res) => {
+  const categoryName = req.params.categoryName;
+
+  if (!categories.map((c) => c.toLowerCase()).includes(categoryName)) {
+    return res.status(404).send("Category not found");
+  }
+
+  res.render("category", { category: categoryName });
+});
 
 router.get("/main", (req, res) => {
   if (!req.session.userEmail) {
-    return res.redirect("/user-login"); // Redirect if not logged in
+    return res.redirect("/user-login");
   }
   const heroContent = {
     dynamicHeading: "We are Primark",
