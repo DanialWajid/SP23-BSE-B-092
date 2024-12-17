@@ -3,10 +3,9 @@ const authMiddleware = (req, res, next) => {
     req.session.userRole === "Admin" ||
     req.session.userRole === "SuperAdmin"
   ) {
-    return next(); // Allow the request to proceed
+    return next();
   }
 
-  // If not authenticated, redirect to the login page
   return res.redirect("/");
 };
 const Superauth = (req, res, next) => {

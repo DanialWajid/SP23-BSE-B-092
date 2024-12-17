@@ -86,25 +86,20 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
-      // Fetch the user's email from the server-rendered variable
-      const userEmail = "<%= userEmail %>"; // Passed from the server-side
+      const userEmail = "<%= userEmail %>";
 
       if (userEmail) {
-        // Get the cart from localStorage using the user's email
         const cart = JSON.parse(localStorage.getItem(userEmail)) || [];
         const cartItemsContainer = document.getElementById("cart-items");
 
-        // Check if the cart is empty
         if (cart.length === 0) {
           cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
         } else {
           let totalPrice = 0;
 
-          // Loop through the cart and create HTML elements for each item
           cart.forEach((item) => {
             totalPrice += item.price * item.quantity;
 
-            // Create a div for each cart item
             const cartItemDiv = document.createElement("div");
             cartItemDiv.classList.add("cart-item");
 
@@ -129,25 +124,21 @@
             cartItemsContainer.appendChild(cartItemDiv);
           });
 
-          // Update the total price
           document.getElementById("total-price").innerHTML = `
             Total Price: £${totalPrice.toFixed(2)}
           `;
         }
 
-        // Handle removal of an item from the cart
         const removeButtons = document.querySelectorAll(".remove-item");
         removeButtons.forEach((button) => {
           button.addEventListener("click", function () {
             const productId = this.getAttribute("data-product-id");
 
-            // Remove the item from the cart in localStorage
             const updatedCart = cart.filter(
               (item) => item.productId !== productId
             );
             localStorage.setItem(userEmail, JSON.stringify(updatedCart));
 
-            // Refresh the cart page
             location.reload();
           });
         });

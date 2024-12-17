@@ -1,7 +1,6 @@
 const multer = require("multer");
 const { createCloudinaryStorage } = require("../util/cloudinary");
 
-// Create a storage for category images
 const categoryImageStorage = createCloudinaryStorage({
   folder: "categoryImage",
   resourceType: "image",
@@ -13,9 +12,8 @@ const categoryImageStorage = createCloudinaryStorage({
   publicId: (req, file) => `${Date.now()}_${file.originalname}`,
 });
 
-// Create a storage for product images
 const productImageStorage = createCloudinaryStorage({
-  folder: "productImage", // New folder for product images
+  folder: "productImage",
   resourceType: "image",
   format: async (req, file) => {
     const mimeType = file.mimetype.split("/")[1];
@@ -25,7 +23,6 @@ const productImageStorage = createCloudinaryStorage({
   publicId: (req, file) => `${Date.now()}_${file.originalname}`,
 });
 
-// Create multer instances
 const uploadCategoryImage = multer({ storage: categoryImageStorage });
 const uploadProductImage = multer({ storage: productImageStorage });
 

@@ -12,23 +12,23 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     sizesAvailable: {
-      type: [String], // Array of available sizes
+      type: [String],
       required: true,
     },
     categoryType: {
-      type: String, // String for category type (e.g., "Men", "Women")
+      type: String,
       required: true,
     },
     itemType: {
-      type: String, // String for item type (e.g., "T-shirt", "Jeans")
+      type: String,
       required: true,
     },
     colors: {
-      type: [String], // Array of available colors
+      type: [String],
       required: true,
     },
     productImage: {
-      type: String, // URL or file path to the first image
+      type: String,
       required: true,
     },
   },
