@@ -98,18 +98,13 @@ router.post("/verify-code", async (req, res) => {
       });
     }
 
-    await user.save();
-
-    if (user.email === "danialwajid112@gmail.com") {
-      await sendWelcomeEmail(user.email, user.verificationToken);
-    }
-
     user.isVerified = true;
     user.verificationToken = undefined;
     user.verificationTokenExpire = undefined;
 
     await user.save();
 
+    await sendWelcomeEmail(user.email, user.verificationToken);
     res.status(200).redirect("/");
   } catch (error) {
     console.log("error in verify-Email ", error.message);

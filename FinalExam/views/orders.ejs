@@ -16,7 +16,7 @@
       }
 
       .container {
-        max-width: 800px;
+        max-width: 900px;
         margin: 50px auto;
         background-color: #fff;
         border-radius: 10px;
@@ -33,6 +33,7 @@
       table {
         width: 100%;
         border-collapse: collapse;
+        margin-bottom: 20px;
       }
 
       table th,
@@ -53,7 +54,12 @@
 
       .btn-group {
         display: flex;
+        flex-direction: column;
         gap: 10px;
+      }
+
+      .btn-group button, .btn-group form {
+        width: 100%;
       }
 
       .order-details {
@@ -72,11 +78,38 @@
         padding: 8px;
         text-align: left;
       }
+
+      .sort-dropdown {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+      }
+
+      .sort-dropdown .form-control {
+        width: 250px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Your Delivery History</h1>
+
+      <!-- Sort Dropdown -->
+      <div class="sort-dropdown">
+        <form method="GET" action="/admin/user/orders">
+          <div class="form-group">
+            <select id="sort" name="sort" class="form-control" onchange="this.form.submit()">
+              <option value="">Sort By</option>
+              <option value="date_asc">Order Date - Ascending</option>
+              <option value="date_desc">Order Date - Descending</option>
+              <option value="price_asc">Price - Ascending</option>
+              <option value="price_desc">Price - Descending</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <!-- Orders Table -->
       <table>
         <thead>
           <tr>
@@ -85,11 +118,12 @@
             <th>Payment Mode</th>
             <th>Status</th>
             <th>Total Amount</th>
-            <th>View Details</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <% if (orders.length > 0) { %> <% orders.forEach(order => { %>
+          <% if (orders.length > 0) { %>
+          <% orders.forEach(order => { %>
           <tr>
             <td><%= new Date(order.orderDate).toLocaleDateString() %></td>
             <td><%= order._id %></td>
@@ -97,17 +131,29 @@
             <td><%= order.status %></td>
             <td>$<%= order.totalAmount.toFixed(2) %></td>
             <td>
-              <button
-                class="btn btn-primary"
-                data-toggle="collapse"
-                data-target="#orderDetails<%= order._id %>"
-              >
-                View Details
-              </button>
+              <div class="btn-group">
+                <!-- View Details Button -->
+                <button
+                  class="btn btn-primary"
+                  data-toggle="collapse"
+                  data-target="#orderDetails<%= order._id %>"
+                >
+                  View Details
+                </button>
+
+                <form action="/<%= order._id %>" method="POST">
+                  <select name="status" class="form-control">
+                    <option value="Pending" <%= order.status === 'Pending' ? 'selected' : '' %>>Pending</option>
+                    <option value="Shipped" <%= order.status === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+                    <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                    <option value="Canceled" <%= order.status === 'Canceled' ? 'selected' : '' %>>Canceled</option>
+                  </select>
+                  <button type="submit" class="btn btn-warning mt-2">Change Status</button>
+                </form>
+              </div>
             </td>
           </tr>
 
-          <!-- Order Details Collapse -->
           <tr id="orderDetails<%= order._id %>" class="collapse">
             <td colspan="6">
               <div class="order-details">
@@ -147,7 +193,8 @@
               </div>
             </td>
           </tr>
-          <% }); %> <% } else { %>
+          <% }); %>
+          <% } else { %>
           <tr>
             <td colspan="6" class="text-center">No orders found.</td>
           </tr>
@@ -156,7 +203,6 @@
       </table>
     </div>
 
-    <!-- Bootstrap JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

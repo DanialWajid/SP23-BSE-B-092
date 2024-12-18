@@ -21,6 +21,20 @@ const orderSchema = new mongoose.Schema({
     type: String,
     default: "COD",
   },
+  creditCardInfo: {
+    cardType: {
+      type: String,
+    },
+    lastFourDigits: {
+      type: String,
+    },
+    cardHolderName: {
+      type: String,
+    },
+    expirationDate: {
+      type: String,
+    },
+  },
   status: {
     type: String,
     default: "Pending",

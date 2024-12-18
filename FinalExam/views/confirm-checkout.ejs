@@ -67,6 +67,10 @@
       .form-check-label {
         color: #007bff;
       }
+
+      .credit-card-details {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -126,18 +130,65 @@
           />
         </div>
 
-        <!-- Cash on Delivery -->
-        <div class="form-group form-check">
-          <label class="form-check-label">
+        <!-- Payment Mode -->
+        <div class="form-group">
+          <label for="paymentMode">Payment Mode</label>
+          <select
+            id="paymentMode"
+            name="paymentMode"
+            class="form-control"
+            required
+          >
+            <option value="cashOnDelivery">Cash on Delivery</option>
+            <option value="cardPayment">Card Payment</option>
+          </select>
+        </div>
+
+        <!-- Credit Card Details (Hidden by Default) -->
+        <div id="credit-card-details" class="credit-card-details">
+          <div class="form-group">
+            <label for="cardHolderName">Card Holder Name</label>
             <input
-              type="checkbox"
-              id="cashOnDelivery"
-              name="paymentMode"
-              class="form-check-input"
-              value="cashOnDelivery"
+              type="text"
+              id="cardHolderName"
+              name="cardHolderName"
+              class="form-control"
+              placeholder="Enter cardholder name"
             />
-            Cash on Delivery
-          </label>
+          </div>
+
+          <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input
+              type="text"
+              id="cardNumber"
+              name="cardNumber"
+              class="form-control"
+              placeholder="Enter your card number"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="expiryDate">Expiration Date</label>
+            <input
+              type="text"
+              id="expiryDate"
+              name="expiryDate"
+              class="form-control"
+              placeholder="MM/YY"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="lastFourDigits">Last 4 Digits of Card</label>
+            <input
+              type="text"
+              id="lastFourDigits"
+              name="lastFourDigits"
+              class="form-control"
+              placeholder="Enter last 4 digits of your card"
+            />
+          </div>
         </div>
 
         <!-- Hidden Cart Data Input -->
@@ -153,16 +204,29 @@
     </div>
 
     <script>
-      const userEmail = "<%= userEmail %>"; // Insert userEmail from session dynamically
+      const userEmail = "<%= userEmail %>";
       const cart = JSON.parse(localStorage.getItem(userEmail)) || [];
+
+      document
+        .getElementById("paymentMode")
+        .addEventListener("change", function () {
+          const paymentMode = this.value;
+          const creditCardDetails = document.getElementById(
+            "credit-card-details"
+          );
+
+          if (paymentMode === "cardPayment") {
+            creditCardDetails.style.display = "block";
+          } else {
+            creditCardDetails.style.display = "none";
+          }
+        });
 
       document
         .getElementById("checkout-form")
         .addEventListener("submit", function (e) {
-          // Add the cart data to the hidden input before submitting the form
           document.getElementById("cart-data").value = JSON.stringify(cart);
 
-          // After form submission, remove the cart from localStorage
           localStorage.removeItem(userEmail);
         });
     </script>

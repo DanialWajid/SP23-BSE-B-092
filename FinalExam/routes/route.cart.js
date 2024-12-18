@@ -54,7 +54,19 @@ router.get("/user/checkout", (req, res) => {
 });
 
 router.post("/user/checkout", (req, res) => {
-  const { name, email, phone, address, paymentMode, cartData } = req.body;
+  const {
+    name,
+    email,
+    phone,
+    address,
+    paymentMode,
+    cartData,
+    cardHolderName,
+    cardNumber,
+    expiryDate,
+    lastFourDigits,
+  } = req.body;
+  console.log("card", cardHolderName, cardNumber, expiryDate, lastFourDigits);
 
   let cart;
   try {
@@ -73,15 +85,32 @@ router.post("/user/checkout", (req, res) => {
     totalAmount += item.price * item.quantity;
   });
 
+  let cardDetails = null;
+  if (paymentMode === "cardPayment") {
+    if (!cardHolderName || !cardNumber || !expiryDate || !lastFourDigits) {
+      return res.status(400).send("Incomplete card details.");
+    }
+
+    cardDetails = {
+      cardHolderName,
+      cardNumber: cardNumber.slice(-4),
+      expiryDate,
+      lastFourDigits,
+    };
+  }
+  console.log("cardDEt", cardDetails);
+
   const newOrder = new Order({
     customerName: name,
     email,
     phone,
     address,
     paymentMode,
+    cardDetails,
     products: cart.map((item) => ({
       productId: item.productId,
       quantity: item.quantity,
+      name: item.name,
       size: item.size,
       color: item.color,
       price: item.price,
@@ -90,8 +119,15 @@ router.post("/user/checkout", (req, res) => {
     totalAmount,
   });
 
-  newOrder.save();
-  res.redirect("/user/thank-you");
+  newOrder
+    .save()
+    .then(() => {
+      res.redirect("/user/thank-you");
+    })
+    .catch((error) => {
+      console.error("Error saving order:", error);
+      res.status(500).send("Error processing order.");
+    });
 });
 
 router.get("/user/thank-you", async (req, res) => {

@@ -72,7 +72,20 @@ router.get("/users/delete/:id", Superauth, async (req, res) => {
 
 router.get("/admin/user/orders", async (req, res) => {
   try {
-    const orders = await Order.find().sort({ orderDate: -1 });
+    const sortOption = req.query.sort || "";
+    let sortCriteria = {};
+
+    if (sortOption === "date_asc") {
+      sortCriteria = { orderDate: 1 };
+    } else if (sortOption === "date_desc") {
+      sortCriteria = { orderDate: -1 };
+    } else if (sortOption === "price_asc") {
+      sortCriteria = { totalAmount: 1 };
+    } else if (sortOption === "price_desc") {
+      sortCriteria = { totalAmount: -1 };
+    }
+
+    const orders = await Order.find().sort(sortCriteria);
 
     if (orders.length === 0) {
       return res.render("orders", { orders: [], message: "No orders found." });
@@ -84,4 +97,23 @@ router.get("/admin/user/orders", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+router.post("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).send("Order not found");
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.redirect("admin/user/orders");
+  } catch (error) {
+    res.status(500).send("Error updating order status");
+  }
+});
+
 module.exports = router;
