@@ -52,9 +52,8 @@ server.use(womenPageRouter);
 server.use(menPageRouter);
 server.use(babyPageRouter);
 server.use(homePageRouter);
-
-mongoose
-  .connect("mongodb+srv://danialwajid:1234@primark.fq1r4.mongodb.net/")
+mongodb: mongoose
+  .connect("mongodb://localhost:27017/project")
   .then(() => console.log("Connected! to mongoDB"));
 
 server.get("/myportfolio", (req, res) => {
