@@ -29,45 +29,76 @@
     <div
       class="bg-image vh-100 d-flex justify-content-center align-items-center"
     >
-      <form
-        action="/user-login"
-        method="POST"
-        class="d-flex flex-column justify-content-center align-items-center h-85 gap-3 rounded border-custom p-5 w-85 bg-custom-2"
+      <div
+        class="form-container d-flex flex-column justify-content-center align-items-center h-85 gap-3 rounded border-custom p-5 w-85 bg-custom-2"
       >
-        <img
-          src="/images/pngfind.com-contact-icons-png-380414.png"
-          class="img-fluid img-sm"
-          alt="Login Icon"
-        />
-        <div><h4 class="me-10 text-custom-2">Email</h4></div>
-        <input
-          type="text"
-          name="email"
-          placeholder="example@domain.com"
-          class="w-100 p-2 bg-custom-1 border-0 rounded text-custom-2 custom-input"
-          required
-        />
-        <div><h4 class="me-9 text-custom-2">Password</h4></div>
-        <input
-          type="password"
-          name="password"
-          id="password-field"
-          class="w-100 p-2 bg-custom-1 border-0 rounded custom-input"
-          required
-        />
-        <div class="text-custom w-100">
-          <input type="checkbox" name="show-password" id="show-password" />
-          <label for="password">Show Password</label>
+        <% if (messages.error || messages.success) { %>
+        <div class="flash-messages w-100 mb-3">
+          <% if (messages.error) { %>
+          <div class="alert alert-danger text-center">
+            <%= messages.error %>
+          </div>
+          <% } %> <% if (messages.success) { %>
+          <div class="alert alert-success text-center">
+            <%= messages.success %>
+          </div>
+          <% } %>
         </div>
-        <input
-          type="submit"
-          class="w-100 p-2 bg-blue border-0 rounded text-custom"
-        />
-        <a href="/user-signup" class="text-light">Sign Up</a>
-        <a href="/admin/user-forgot-password" class="text-light"
-          >Forgot Password?</a
+        <% } %>
+
+        <form
+          action="/user-login"
+          method="POST"
+          class="d-flex flex-column justify-content-center align-items-center h-100 gap-3 w-100"
         >
-      </form>
+          <img
+            src="/images/pngfind.com-contact-icons-png-380414.png"
+            class="img-fluid img-sm"
+            alt="Login Icon"
+          />
+          <div><h4 class="me-10 text-custom-2">Email</h4></div>
+          <input
+            type="text"
+            name="email"
+            placeholder="example@domain.com"
+            class="w-100 p-2 bg-custom-1 border-0 rounded text-custom-2 custom-input"
+            required
+          />
+          <div><h4 class="me-9 text-custom-2">Password</h4></div>
+          <input
+            type="password"
+            name="password"
+            id="password-field"
+            class="w-100 p-2 bg-custom-1 border-0 rounded custom-input"
+            required
+          />
+          <div class="text-custom w-100">
+            <input type="checkbox" id="show-password" />
+            <label for="show-password">Show Password</label>
+          </div>
+          <input
+            type="submit"
+            class="w-100 p-2 bg-blue border-0 rounded text-custom"
+          />
+          <a href="/user-signup" class="text-light">Sign Up</a>
+          <a href="/admin/user-forgot-password" class="text-light"
+            >Forgot Password?</a
+          >
+        </form>
+      </div>
     </div>
+
+    <script>
+      document
+        .getElementById("show-password")
+        .addEventListener("click", function () {
+          const passwordField = document.getElementById("password-field");
+          if (this.checked) {
+            passwordField.type = "text";
+          } else {
+            passwordField.type = "password";
+          }
+        });
+    </script>
   </body>
 </html>

@@ -4,6 +4,8 @@ var expressLayouts = require("express-ejs-layouts");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 let server = express();
+const flashMiddleware = require("./util/cookie");
+const flash = require("connect-flash");
 server.use(express.urlencoded({ extended: true }));
 server.set("view engine", "ejs");
 server.use(expressLayouts);
@@ -28,7 +30,7 @@ let cartRouter = require("./routes/route.cart");
 
 const { sessionMiddleware, deleteUserSession } = require("./util/cookie");
 server.use(sessionMiddleware);
-
+server.use(flash());
 dotenv.config({ path: ".env.local" });
 server.use(express.urlencoded({ extended: true }));
 server.use(kidsPageRouter);

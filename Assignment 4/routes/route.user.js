@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const bcryptjs = require("bcryptjs");
+const flash = require("connect-flash");
 const crypto = require("crypto");
 const { User } = require("../model/user.model");
 const {
@@ -26,7 +27,7 @@ router.get("/user-login", (req, res) => {
   if (req.session.userEmail) {
     return res.redirect("/");
   }
-  res.render("login");
+  res.render("login", { messages: req.flash() });
 });
 
 router.post("/user-signup", async (req, res) => {
@@ -121,17 +122,16 @@ router.post("/user-login", async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+      req.flash("error", "Invalid credentials");
+      return res.redirect("/user-login");
     }
 
     const isPasswordValid = await bcryptjs.compare(password, user.password);
     if (!isPasswordValid) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid credentials" });
+      req.flash("error", "Invalid credentials");
+      return res.redirect("/user-login");
     }
+
     console.log("Role", user.role);
     req.session.userEmail = user.email;
     req.session.userRole = user.role;
@@ -141,12 +141,15 @@ router.post("/user-login", async (req, res) => {
     user.lastLogin = new Date();
     await user.save();
 
-    res.status(200).redirect("/");
+    req.flash("success", "Login successful!");
+    res.redirect("/");
   } catch (error) {
     console.log("Error in login ", error);
-    res.status(400).json({ success: false, message: error.message });
+    req.flash("error", "An error occurred during login");
+    res.redirect("/user-login");
   }
 });
+
 router.get("/user-logout", async (req, res) => {
   req.session.destroy((err) => {
     res.clearCookie("connect.sid");
