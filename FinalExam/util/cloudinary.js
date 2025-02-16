@@ -5,9 +5,9 @@ const dotenv = require("dotenv");
 dotenv.config({ path: ".env.local" });
 
 cloudinary.config({
-  cloud_name: "do35a2aay",
-  api_key: "619267614658392",
-  api_secret: "e0C1Zv-6aXs43A3P7M0pks4mihk",
+  cloud_name: "CLOUDINARY_CLOUD_NAME",
+  api_key: "CLOUDINARY_API_KEY",
+  api_secret: "CLOUDINARY_API_SECRET",
 });
 
 const createCloudinaryStorage = ({

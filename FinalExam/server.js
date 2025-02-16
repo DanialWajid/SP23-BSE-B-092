@@ -54,9 +54,7 @@ server.use(babyPageRouter);
 server.use(homePageRouter);
 
 // .connect("mongodb+srv://danialwajid:1234@primark.fq1r4.mongodb.net/")
-mongoose
-  .connect("mongodb://localhost:27017/project")
-  .then(() => console.log("Connected! to mongoDB"));
+mongoose.connect(MONGODB_URI).then(() => console.log("Connected! to mongoDB"));
 
 server.get("/myportfolio", (req, res) => {
   res.render("project");

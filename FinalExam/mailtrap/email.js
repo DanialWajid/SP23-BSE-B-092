@@ -10,7 +10,7 @@ const sendVerificationEmail = async (email, verificationToken) => {
   const response = await mailtrapClient.send({
     from: sender,
     to: recipient,
-    template_uuid: "af447202-3111-4c8f-9a47-07dd51db772e",
+    template_uuid: template_UUID,
     template_variables: {
       name: verificationToken,
     },
@@ -25,7 +25,7 @@ const sendWelcomeEmail = async (email, name) => {
     const response = await mailtrapClient.send({
       from: sender,
       to: recipient,
-      template_uuid: "9c42c488-be40-41e0-af9f-a61b79ec45e9",
+      template_uuid: template_UUID1,
       template_variables: {
         name: name,
         company_info_name: "Danial Wajid",
