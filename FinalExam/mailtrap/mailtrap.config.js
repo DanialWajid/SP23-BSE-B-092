@@ -4,8 +4,8 @@ const { MailtrapClient } = require("mailtrap");
 dotenv.config(); // Load environment variables from .env file
 
 const mailtrapClient = new MailtrapClient({
-  token: TOKEN,
-  endpoint: ENDPOINT,
+  token: process.env.TOKEN,
+  endpoint: process.env.ENDPOINT,
 });
 
 const sender = {
